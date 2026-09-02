@@ -101,9 +101,10 @@
         <section class="hero-slider-section">
             <div class="hero-slider-wrapper">
                 <div class="slider-track" id="heroSliderTrack">
-                    <!-- Default Fallback Slide (Prevents black box on slow networks) -->
-                    <div class="slider-slide active" ng-if="!heroArticles || heroArticles.length === 0">
-                        <img src="assets/images/news/curvv-launch.png" alt="Tata Curvv EV">
+                    <!-- Static Fallback Slide: always visible until AngularJS loads data -->
+                    <!-- Uses real Nexon PNG (big photo), hidden once heroArticles arrives -->
+                    <div class="slider-slide active" ng-hide="heroArticles && heroArticles.length > 0">
+                        <img src="assets/images/cars/nexon-real.png" alt="Tata Nexon Facelift" style="object-fit:cover; width:100%; height:100%;">
                         <div class="slider-overlay">
                             <span class="slider-tag">Car News</span>
                             <h1 class="slider-headline">
@@ -120,9 +121,9 @@
                         </div>
                     </div>
 
-                    <!-- Dynamic Hero Slide -->
-                    <div class="slider-slide active" ng-repeat="hero in heroArticles" ng-if="$first && heroArticles.length > 0">
-                        <img ng-src="{{ hero.image }}" alt="{{ hero.title }}">
+                    <!-- Dynamic Hero Slides from Supabase/JSON — limitTo:1 prevents ng-if conflict -->
+                    <div class="slider-slide active" ng-repeat="hero in heroArticles | limitTo:1">
+                        <img ng-src="{{ hero.image }}" alt="{{ hero.title }}" style="object-fit:cover; width:100%; height:100%;">
                         <div class="slider-overlay">
                             <span class="slider-tag">{{ hero.category }}</span>
                             <h1 class="slider-headline">
