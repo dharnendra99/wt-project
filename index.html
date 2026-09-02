@@ -12,8 +12,8 @@
     
     <!-- Supabase Client & AngularJS App -->
     <script src="assets/js/angular.min.js"></script>
-    <script src="assets/js/supabase-client.js"></script>
-    <script src="assets/js/app.js?v=4"></script>
+    <script src="assets/js/supabase-client.js?v=5"></script>
+    <script src="assets/js/app.js?v=5"></script>
 </head>
 <body ng-controller="MainCtrl">
 
@@ -97,7 +97,27 @@
         <section class="hero-slider-section">
             <div class="hero-slider-wrapper">
                 <div class="slider-track" id="heroSliderTrack">
-                    <div class="slider-slide active" ng-repeat="hero in heroArticles" ng-if="$first">
+                    <!-- Default Fallback Slide (Prevents black box on slow networks) -->
+                    <div class="slider-slide active" ng-if="!heroArticles || heroArticles.length === 0">
+                        <img src="assets/images/news/curvv-launch.svg" alt="Tata Curvv EV">
+                        <div class="slider-overlay">
+                            <span class="slider-tag">Car News</span>
+                            <h1 class="slider-headline">
+                                <a href="news.html">Tata Curvv EV Launched In India: Price Starts At Rs 17.49 Lakh</a>
+                            </h1>
+                            <div class="slider-meta">
+                                <div class="author-info">
+                                    <img src="assets/images/avatars/hormazd.svg" alt="Hormazd Sorabjee" class="author-avatar-sm">
+                                    <span>Hormazd Sorabjee</span>
+                                </div>
+                                <span>&bull;</span>
+                                <span>184K+ views</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dynamic Hero Slide -->
+                    <div class="slider-slide active" ng-repeat="hero in heroArticles" ng-if="$first && heroArticles.length > 0">
                         <img ng-src="{{ hero.image }}" alt="{{ hero.title }}">
                         <div class="slider-overlay">
                             <span class="slider-tag">{{ hero.category }}</span>
@@ -109,10 +129,8 @@
                                     <img ng-src="{{ hero.author_avatar }}" alt="{{ hero.author_name }}" class="author-avatar-sm">
                                     <span>{{ hero.author_name }}</span>
                                 </div>
-                                <span>•</span>
-                                <span>{{ hero.published_at | date:'mediumDate' }}</span>
-                                <span>•</span>
-                                <span>{{ formatViews(hero.views_count) }} Reads</span>
+                                <span>&bull;</span>
+                                <span>{{ formatViews(hero.views_count) }} views</span>
                             </div>
                         </div>
                     </div>

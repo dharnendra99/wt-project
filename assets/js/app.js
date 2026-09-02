@@ -27,70 +27,79 @@ app.filter('trustHtml', ['$sce', function($sce) {
 }]);
 
 // Global Service to load data from JSON or PHP API
+// Global Service to load data from Supabase Cloud DB, PHP API, or bundled JSON
 app.factory('DataService', ['$http', function($http) {
+    var supa = window.SUPABASE_CONFIG || {};
+    var isSupa = supa.url && supa.url.indexOf('supabase.co') > -1 && supa.anonKey && supa.anonKey.length > 20;
+
+    var supaHeaders = isSupa ? {
+        'apikey': supa.anonKey,
+        'Authorization': 'Bearer ' + supa.anonKey
+    } : {};
+
     return {
         getCars: function() {
-            // 1. Check if Supabase Cloud is configured
-            if (typeof SupaDB !== 'undefined' && SupaDB.isConfigured()) {
-                return SupaDB.getCars().catch(function() {
+            if (isSupa) {
+                var url = supa.url + '/rest/v1/cars?select=*&order=price_min.asc';
+                return $http.get(url, { headers: supaHeaders, timeout: 6000 }).then(function(res) {
+                    if (res.data && res.data.length > 0) return res.data;
+                    return fallbackCars();
+                }).catch(function(err) {
+                    console.warn('Supabase cars fetch failed, falling back:', err);
                     return fallbackCars();
                 });
             }
             return fallbackCars();
 
             function fallbackCars() {
-                // 2. Local PHP API (XAMPP / MySQL)
-                return $http.get('api/cars.php?t=' + Date.now()).then(function(res) {
+                return $http.get('data/cars.json?t=' + Date.now()).then(function(res) {
                     return res.data;
                 }).catch(function() {
-                    // 3. Fallback to local JSON (Vercel / Offline)
-                    var local = localStorage.getItem('autopulse_cars_db');
-                    if (local && local.indexOf('-real.png') > -1) {
-                        return JSON.parse(local);
-                    }
-                    return $http.get('data/cars.json?t=' + Date.now()).then(function(res) {
+                    return $http.get('api/cars.php').then(function(res) {
                         return res.data;
                     });
                 });
             }
         },
         getNews: function() {
-            if (typeof SupaDB !== 'undefined' && SupaDB.isConfigured()) {
-                return SupaDB.getNews().catch(function() {
+            if (isSupa) {
+                var url = supa.url + '/rest/v1/news_articles?select=*&order=published_at.desc';
+                return $http.get(url, { headers: supaHeaders, timeout: 6000 }).then(function(res) {
+                    if (res.data && res.data.length > 0) return res.data;
+                    return fallbackNews();
+                }).catch(function(err) {
+                    console.warn('Supabase news fetch failed, falling back:', err);
                     return fallbackNews();
                 });
             }
             return fallbackNews();
 
             function fallbackNews() {
-                return $http.get('api/news.php').then(function(res) {
+                return $http.get('data/news.json?t=' + Date.now()).then(function(res) {
                     return res.data;
                 }).catch(function() {
-                    var local = localStorage.getItem('autopulse_news_db');
-                    if (local) return JSON.parse(local);
-                    return $http.get('data/news.json').then(function(res) {
+                    return $http.get('api/news.php').then(function(res) {
                         return res.data;
                     });
                 });
             }
         },
         getReviews: function() {
-            if (typeof SupaDB !== 'undefined' && SupaDB.isConfigured()) {
-                return SupaDB.getReviews().catch(function() {
+            if (isSupa) {
+                var url = supa.url + '/rest/v1/reviews?select=*&status=eq.approved&order=created_at.desc';
+                return $http.get(url, { headers: supaHeaders, timeout: 6000 }).then(function(res) {
+                    if (res.data && res.data.length > 0) return res.data;
+                    return fallbackReviews();
+                }).catch(function(err) {
+                    console.warn('Supabase reviews fetch failed, falling back:', err);
                     return fallbackReviews();
                 });
             }
             return fallbackReviews();
 
             function fallbackReviews() {
-                return $http.get('api/reviews.php').then(function(res) {
+                return $http.get('data/reviews.json?t=' + Date.now()).then(function(res) {
                     return res.data;
-                }).catch(function() {
-                    var local = localStorage.getItem('autopulse_reviews_db');
-                    if (local) return JSON.parse(local);
-                    return $http.get('data/reviews.json').then(function(res) {
-                        return res.data;
-                    });
                 });
             }
         }
@@ -102,6 +111,11 @@ app.controller('MainCtrl', ['$scope', 'DataService', function($scope, DataServic
     $scope.currentCity = localStorage.getItem('autopulse_city') || 'Delhi';
     $scope.searchOpen = false;
     $scope.searchQuery = '';
+    $scope.heroArticles = [];
+    $scope.allCars = [];
+    $scope.allNews = [];
+    $scope.latestNews = [];
+    $scope.trendingNews = [];
 
     $scope.changeCity = function() {
         localStorage.setItem('autopulse_city', $scope.currentCity);
@@ -111,19 +125,24 @@ app.controller('MainCtrl', ['$scope', 'DataService', function($scope, DataServic
         $scope.searchOpen = !$scope.searchOpen;
     };
 
-    // Load Cars and News
+    // Load Cars
     DataService.getCars().then(function(cars) {
-        $scope.allCars = cars;
-        $scope.trendingCars = cars.filter(function(c) { return c.status === 'Trending'; }).slice(0, 3);
-        $scope.upcomingCars = cars.filter(function(c) { return c.status === 'Upcoming' || c.body_type === 'EV'; }).slice(0, 3);
+        $scope.allCars = cars || [];
+        $scope.trendingCars = ($scope.allCars).filter(function(c) { return c.status === 'Trending'; }).slice(0, 3);
+        $scope.upcomingCars = ($scope.allCars).filter(function(c) { return c.status === 'Upcoming' || c.body_type === 'EV'; }).slice(0, 3);
+        if ($scope.trendingCars.length === 0 && $scope.allCars.length > 0) $scope.trendingCars = $scope.allCars.slice(0, 3);
+        if ($scope.upcomingCars.length === 0 && $scope.allCars.length > 3) $scope.upcomingCars = $scope.allCars.slice(3, 6);
     });
 
+    // Load News
     DataService.getNews().then(function(news) {
-        $scope.allNews = news;
-        $scope.heroArticles = news.filter(function(n) { return n.is_hero; });
-        if ($scope.heroArticles.length === 0) $scope.heroArticles = news.slice(0, 3);
-        $scope.latestNews = news.slice(1, 5);
-        $scope.trendingNews = news.slice(0, 4).sort(function(a, b) { return b.views_count - a.views_count; });
+        $scope.allNews = news || [];
+        $scope.heroArticles = ($scope.allNews).filter(function(n) { return n.is_hero == 1 || n.is_hero === true; });
+        if ($scope.heroArticles.length === 0 && $scope.allNews.length > 0) {
+            $scope.heroArticles = [$scope.allNews[0]];
+        }
+        $scope.latestNews = ($scope.allNews).slice(0, 5);
+        $scope.trendingNews = ($scope.allNews).slice(0, 4).sort(function(a, b) { return (b.views_count || 0) - (a.views_count || 0); });
     });
 
     $scope.editors = [
@@ -174,9 +193,10 @@ app.controller('CarsCtrl', ['$scope', 'DataService', function($scope, DataServic
     $scope.brandsList = ['Tata Motors', 'Mahindra', 'Hyundai', 'Maruti Suzuki', 'BMW'];
     $scope.bodyTypesList = ['SUV', 'Sedan', 'Hatchback', 'EV', 'Luxury'];
     $scope.fuelTypesList = ['Petrol', 'Diesel', 'Electric', 'Hybrid'];
+    $scope.cars = [];
 
     DataService.getCars().then(function(cars) {
-        $scope.cars = cars;
+        $scope.cars = cars || [];
     });
 
     $scope.resetFilters = function() {
@@ -188,34 +208,31 @@ app.controller('CarsCtrl', ['$scope', 'DataService', function($scope, DataServic
     };
 
     $scope.customCarFilter = function(car) {
-        // Brand filter
+        if (!car) return false;
         var selectedBrands = Object.keys($scope.filter.brands).filter(function(b) { return $scope.filter.brands[b]; });
         if (selectedBrands.length > 0 && selectedBrands.indexOf(car.brand_name) === -1) {
             return false;
         }
 
-        // Body type filter
         var selectedBodies = Object.keys($scope.filter.bodyTypes).filter(function(b) { return $scope.filter.bodyTypes[b]; });
         if (selectedBodies.length > 0 && selectedBodies.indexOf(car.body_type) === -1) {
             return false;
         }
 
-        // Fuel type filter
         var selectedFuels = Object.keys($scope.filter.fuelTypes).filter(function(f) { return $scope.filter.fuelTypes[f]; });
         if (selectedFuels.length > 0 && selectedFuels.indexOf(car.fuel_type) === -1) {
             return false;
         }
 
-        // Budget filter
         if ($scope.filter.priceBracket === 'under_10' && car.price_min >= 10) return false;
         if ($scope.filter.priceBracket === '10_to_20' && (car.price_min < 10 || car.price_min > 20)) return false;
         if ($scope.filter.priceBracket === '20_to_50' && (car.price_min < 20 || car.price_min > 50)) return false;
         if ($scope.filter.priceBracket === 'above_50' && car.price_min <= 50) return false;
 
-        // Search text
         if ($scope.filter.search) {
             var term = $scope.filter.search.toLowerCase();
-            return car.name.toLowerCase().indexOf(term) > -1 || (car.brand_name && car.brand_name.toLowerCase().indexOf(term) > -1);
+            return (car.name && car.name.toLowerCase().indexOf(term) > -1) || 
+                   (car.brand_name && car.brand_name.toLowerCase().indexOf(term) > -1);
         }
 
         return true;
@@ -228,7 +245,6 @@ app.controller('CarsCtrl', ['$scope', 'DataService', function($scope, DataServic
         return '-id';
     };
 
-    // Wishlist
     $scope.wishlist = JSON.parse(localStorage.getItem('autopulse_wishlist') || '[]');
     $scope.toggleWishlist = function(carId) {
         var idx = $scope.wishlist.indexOf(carId);
@@ -243,7 +259,6 @@ app.controller('CarsCtrl', ['$scope', 'DataService', function($scope, DataServic
 
 // 3. Car Detail Controller
 app.controller('CarDetailCtrl', ['$scope', 'DataService', function($scope, DataService) {
-    // Get ID from URL: car-detail.html?id=1 or ?slug=...
     var urlParams = new URLSearchParams(window.location.search);
     var carId = parseInt(urlParams.get('id') || '1');
     var slug = urlParams.get('slug');
@@ -252,19 +267,22 @@ app.controller('CarDetailCtrl', ['$scope', 'DataService', function($scope, DataS
     $scope.newReview = { author_name: '', rating: '5.0', title: '', review_text: '' };
     $scope.reviewSubmitted = false;
     $scope.selectedCity = localStorage.getItem('autopulse_city') || 'Delhi';
+    $scope.reviews = [];
 
     DataService.getCars().then(function(cars) {
-        var found = cars.find(function(c) {
+        var found = (cars || []).find(function(c) {
             return (slug && c.slug === slug) || c.id === carId;
-        }) || cars[0];
+        }) || (cars && cars[0]);
 
-        $scope.car = found;
-        $scope.activeImage = found.featured_image;
-        $scope.gallery = found.gallery_images || [found.featured_image];
+        if (found) {
+            $scope.car = found;
+            $scope.activeImage = found.featured_image;
+            $scope.gallery = found.gallery_images || [found.featured_image];
+        }
     });
 
     DataService.getReviews().then(function(reviews) {
-        $scope.reviews = reviews.filter(function(r) { return r.car_id === carId; });
+        $scope.reviews = (reviews || []).filter(function(r) { return r.car_id === carId; });
         if ($scope.reviews.length === 0) {
             $scope.reviews = [
                 {
@@ -285,11 +303,25 @@ app.controller('CarDetailCtrl', ['$scope', 'DataService', function($scope, DataS
     $scope.submitReview = function() {
         if (!$scope.newReview.author_name || !$scope.newReview.title || !$scope.newReview.review_text) return;
 
-        $scope.reviews.unshift({
+        var revObj = {
+            car_id: $scope.car ? $scope.car.id : carId,
+            car_name: $scope.car ? $scope.car.name : 'Car',
             author_name: $scope.newReview.author_name,
             rating: parseFloat($scope.newReview.rating),
             title: $scope.newReview.title,
             review_text: $scope.newReview.review_text,
+            status: 'approved'
+        };
+
+        if (typeof SupaDB !== 'undefined' && SupaDB.isConfigured()) {
+            SupaDB.submitReview(revObj);
+        }
+
+        $scope.reviews.unshift({
+            author_name: revObj.author_name,
+            rating: revObj.rating,
+            title: revObj.title,
+            review_text: revObj.review_text,
             date: 'Just now'
         });
 
@@ -300,22 +332,29 @@ app.controller('CarDetailCtrl', ['$scope', 'DataService', function($scope, DataS
 
 // 4. Compare Controller
 app.controller('CompareCtrl', ['$scope', 'DataService', function($scope, DataService) {
+    $scope.allCars = [];
+    $scope.comparedCars = [];
+
+    var urlParams = new URLSearchParams(window.location.search);
+    $scope.car1Id = parseInt(urlParams.get('car1') || '1');
+    $scope.car2Id = parseInt(urlParams.get('car2') || '3');
+    $scope.car3Id = parseInt(urlParams.get('car3') || '0') || null;
+
     DataService.getCars().then(function(cars) {
-        $scope.allCars = cars;
-        
-        var urlParams = new URLSearchParams(window.location.search);
-        var id1 = parseInt(urlParams.get('car1') || '1');
-        var id2 = parseInt(urlParams.get('car2') || '3');
-        var id3 = parseInt(urlParams.get('car3') || '0');
-
-        $scope.car1Id = id1;
-        $scope.car2Id = id2;
-        $scope.car3Id = id3 || null;
-
+        $scope.allCars = cars || [];
+        if ($scope.allCars.length > 0) {
+            if (!$scope.car1Id || !$scope.allCars.find(function(c){ return c.id == $scope.car1Id; })) {
+                $scope.car1Id = $scope.allCars[0].id;
+            }
+            if (!$scope.car2Id || !$scope.allCars.find(function(c){ return c.id == $scope.car2Id; })) {
+                $scope.car2Id = $scope.allCars.length > 1 ? $scope.allCars[1].id : $scope.allCars[0].id;
+            }
+        }
         $scope.updateComparison();
     });
 
     $scope.updateComparison = function() {
+        if (!$scope.allCars || $scope.allCars.length === 0) return;
         $scope.comparedCars = [];
         var c1 = $scope.allCars.find(function(c) { return c.id == $scope.car1Id; });
         var c2 = $scope.allCars.find(function(c) { return c.id == $scope.car2Id; });
@@ -333,14 +372,15 @@ app.controller('CompareCtrl', ['$scope', 'DataService', function($scope, DataSer
 app.controller('NewsCtrl', ['$scope', 'DataService', function($scope, DataService) {
     $scope.selectedCategory = 'All';
     $scope.categories = ['All', 'Car News', 'Bike News', 'Motorsport', 'Industry'];
+    $scope.news = [];
 
     DataService.getNews().then(function(news) {
-        $scope.news = news;
+        $scope.news = news || [];
     });
 
     $scope.filterNews = function(item) {
         if ($scope.selectedCategory === 'All') return true;
-        return item.category === $scope.selectedCategory;
+        return item && item.category === $scope.selectedCategory;
     };
 }]);
 

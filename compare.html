@@ -7,8 +7,8 @@
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/responsive.css">
     <script src="assets/js/angular.min.js"></script>
-    <script src="assets/js/supabase-client.js"></script>
-    <script src="assets/js/app.js?v=4"></script>
+    <script src="assets/js/supabase-client.js?v=5"></script>
+    <script src="assets/js/app.js?v=5"></script>
 </head>
 <body ng-controller="CompareCtrl">
 
@@ -53,21 +53,18 @@
         <div class="compare-selector-bar">
             <div class="compare-slot">
                 <label style="display:block; font-size:11px; font-weight:700; text-transform:uppercase; color:var(--text-muted); margin-bottom:8px;">Car 1</label>
-                <select ng-model="car1Id" ng-change="updateComparison()" style="width:100%; padding:10px; border:1px solid #ccc; border-radius:4px; font-weight:700;">
-                    <option ng-repeat="c in allCars" value="{{ c.id }}">{{ c.name }}</option>
+                <select ng-model="car1Id" ng-change="updateComparison()" ng-options="c.id as c.name for c in allCars" style="width:100%; padding:10px; border:1px solid #ccc; border-radius:4px; font-weight:700;">
                 </select>
             </div>
             <div class="compare-slot">
                 <label style="display:block; font-size:11px; font-weight:700; text-transform:uppercase; color:var(--text-muted); margin-bottom:8px;">Car 2</label>
-                <select ng-model="car2Id" ng-change="updateComparison()" style="width:100%; padding:10px; border:1px solid #ccc; border-radius:4px; font-weight:700;">
-                    <option ng-repeat="c in allCars" value="{{ c.id }}">{{ c.name }}</option>
+                <select ng-model="car2Id" ng-change="updateComparison()" ng-options="c.id as c.name for c in allCars" style="width:100%; padding:10px; border:1px solid #ccc; border-radius:4px; font-weight:700;">
                 </select>
             </div>
             <div class="compare-slot">
                 <label style="display:block; font-size:11px; font-weight:700; text-transform:uppercase; color:var(--text-muted); margin-bottom:8px;">Car 3 (Optional)</label>
-                <select ng-model="car3Id" ng-change="updateComparison()" style="width:100%; padding:10px; border:1px solid #ccc; border-radius:4px; font-weight:700;">
+                <select ng-model="car3Id" ng-change="updateComparison()" ng-options="c.id as c.name for c in allCars" style="width:100%; padding:10px; border:1px solid #ccc; border-radius:4px; font-weight:700;">
                     <option value="">-- Add 3rd Car --</option>
-                    <option ng-repeat="c in allCars" value="{{ c.id }}">{{ c.name }}</option>
                 </select>
             </div>
         </div>
