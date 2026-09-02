@@ -418,7 +418,8 @@ app.controller('ChatbotCtrl', ['$scope', '$http', 'DataService', function($scope
 
         // 1️⃣ Try Vercel Serverless Function (/api/gemini)
         $http.post('/api/gemini', { message: msg }, {
-            headers: { 'Content-Type': 'application/json' }
+            headers: { 'Content-Type': 'application/json' },
+            timeout: 15000
         }).then(function(res) {
             if (res.data && res.data.reply) {
                 handleBotSuccess(res.data.reply, res.data.source || 'gemini', res.data.suggestions);

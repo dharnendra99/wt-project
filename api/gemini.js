@@ -45,57 +45,71 @@ Your capabilities & instructions:
 5. Keep responses under 180 words, punchy and easy to read on mobile.
 6. Featured AutoPulse cars: Tata Nexon Facelift (Rs 8.00 - 15.50 L), Mahindra XUV700 (Rs 13.99 - 26.99 L), Hyundai Creta (Rs 11.00 - 20.15 L), Maruti Suzuki Swift (Rs 6.49 - 9.64 L), BMW 3 Series Gran Limousine (Rs 60.60 - 62.00 L), Tata Curvv EV (Rs 17.49 - 21.99 L).`;
 
-  try {
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-lite-latest:generateContent?key=${apiKey}`;
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        contents: [
-          {
-            role: 'user',
-            parts: [{ text: `${systemPrompt}\n\nUser Question: ${message}` }]
+  // List of models in order of speed and stability
+  const candidateModels = [
+    'gemini-flash-lite-latest',
+    'gemini-3.6-flash',
+    'gemini-3.5-flash-lite'
+  ];
+
+  let reply = '';
+  let lastError = null;
+
+  for (const model of candidateModels) {
+    try {
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [
+            {
+              role: 'user',
+              parts: [{ text: `${systemPrompt}\n\nUser Question: ${message}` }]
+            }
+          ],
+          generationConfig: {
+            temperature: 0.7,
+            maxOutputTokens: 350
           }
-        ],
-        generationConfig: {
-          temperature: 0.7,
-          maxOutputTokens: 350
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(`Model ${model} returned status ${response.status}`);
+      }
+
+      const data = await response.json();
+      if (data.candidates && data.candidates[0]?.content?.parts) {
+        const parts = data.candidates[0].content.parts;
+        reply = parts.map(p => p.text || '').join('\n').trim();
+        if (reply) {
+          break; // Got valid reply, stop trying other models
         }
-      })
-    });
-
-    if (!response.ok) {
-      throw new Error(`Gemini API returned status ${response.status}`);
+      }
+    } catch (err) {
+      lastError = err;
+      continue;
     }
+  }
 
-    const data = await response.json();
-    let reply = '';
-
-    if (data.candidates && data.candidates[0]?.content?.parts) {
-      const parts = data.candidates[0].content.parts;
-      reply = parts.map(p => p.text || '').join('\n').trim();
-    }
-
-    if (!reply) {
-      throw new Error('No candidate reply text received');
-    }
-
-    // Clean markdown formatting if any
-    reply = reply.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-    reply = reply.replace(/\*(.+?)\*/g, '<em>$1</em>');
-    reply = reply.replace(/\n\n/g, '<br><br>');
-    reply = reply.replace(/\n/g, '<br>');
-
+  if (!reply) {
     return res.status(200).json({
-      reply,
-      source: 'gemini',
-      suggestions: ['Compare cars', 'Upcoming EVs', 'Best mileage car', 'Safest car under 20L']
-    });
-  } catch (err) {
-    return res.status(500).json({
-      error: err.message,
-      reply: `Gemini AI encountered an error: ${err.message}`,
-      source: 'error'
+      reply: `I received your question about <strong>${message}</strong>! AutoPulse AI is experiencing high traffic. Please try asking again in a moment.`,
+      source: 'offline',
+      suggestions: ['Price of Nexon', 'Compare cars', 'Best EV under 25L']
     });
   }
+
+  // Clean markdown formatting to clean HTML
+  reply = reply.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  reply = reply.replace(/\*(.+?)\*/g, '<em>$1</em>');
+  reply = reply.replace(/\n\n/g, '<br><br>');
+  reply = reply.replace(/\n/g, '<br>');
+
+  return res.status(200).json({
+    reply,
+    source: 'gemini',
+    suggestions: ['Compare cars', 'Upcoming EVs', 'Best mileage car', 'Safest car under 20L']
+  });
 }
