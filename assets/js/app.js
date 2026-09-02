@@ -30,44 +30,69 @@ app.filter('trustHtml', ['$sce', function($sce) {
 app.factory('DataService', ['$http', function($http) {
     return {
         getCars: function() {
-            return $http.get('api/cars.php?t=' + Date.now()).then(function(res) {
-                return res.data;
-            }).catch(function() {
-                // Fallback to local JSON for Vercel
-                var local = localStorage.getItem('autopulse_cars_db');
-                if (local && local.indexOf('-real.png') > -1) {
-                    return JSON.parse(local);
-                }
-                return $http.get('data/cars.json?t=' + Date.now()).then(function(res) {
-                    return res.data;
+            // 1. Check if Supabase Cloud is configured
+            if (typeof SupaDB !== 'undefined' && SupaDB.isConfigured()) {
+                return SupaDB.getCars().catch(function() {
+                    return fallbackCars();
                 });
-            });
+            }
+            return fallbackCars();
+
+            function fallbackCars() {
+                // 2. Local PHP API (XAMPP / MySQL)
+                return $http.get('api/cars.php?t=' + Date.now()).then(function(res) {
+                    return res.data;
+                }).catch(function() {
+                    // 3. Fallback to local JSON (Vercel / Offline)
+                    var local = localStorage.getItem('autopulse_cars_db');
+                    if (local && local.indexOf('-real.png') > -1) {
+                        return JSON.parse(local);
+                    }
+                    return $http.get('data/cars.json?t=' + Date.now()).then(function(res) {
+                        return res.data;
+                    });
+                });
+            }
         },
         getNews: function() {
-            return $http.get('api/news.php').then(function(res) {
-                return res.data;
-            }).catch(function() {
-                var local = localStorage.getItem('autopulse_news_db');
-                if (local) {
-                    return JSON.parse(local);
-                }
-                return $http.get('data/news.json').then(function(res) {
-                    return res.data;
+            if (typeof SupaDB !== 'undefined' && SupaDB.isConfigured()) {
+                return SupaDB.getNews().catch(function() {
+                    return fallbackNews();
                 });
-            });
+            }
+            return fallbackNews();
+
+            function fallbackNews() {
+                return $http.get('api/news.php').then(function(res) {
+                    return res.data;
+                }).catch(function() {
+                    var local = localStorage.getItem('autopulse_news_db');
+                    if (local) return JSON.parse(local);
+                    return $http.get('data/news.json').then(function(res) {
+                        return res.data;
+                    });
+                });
+            }
         },
         getReviews: function() {
-            return $http.get('api/reviews.php').then(function(res) {
-                return res.data;
-            }).catch(function() {
-                var local = localStorage.getItem('autopulse_reviews_db');
-                if (local) {
-                    return JSON.parse(local);
-                }
-                return $http.get('data/reviews.json').then(function(res) {
-                    return res.data;
+            if (typeof SupaDB !== 'undefined' && SupaDB.isConfigured()) {
+                return SupaDB.getReviews().catch(function() {
+                    return fallbackReviews();
                 });
-            });
+            }
+            return fallbackReviews();
+
+            function fallbackReviews() {
+                return $http.get('api/reviews.php').then(function(res) {
+                    return res.data;
+                }).catch(function() {
+                    var local = localStorage.getItem('autopulse_reviews_db');
+                    if (local) return JSON.parse(local);
+                    return $http.get('data/reviews.json').then(function(res) {
+                        return res.data;
+                    });
+                });
+            }
         }
     };
 }]);
