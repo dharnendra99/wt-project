@@ -35,7 +35,7 @@ Your capabilities & instructions:
 6. Featured AutoPulse cars: Tata Nexon Facelift (Rs 8.00 - 15.50 L), Mahindra XUV700 (Rs 13.99 - 26.99 L), Hyundai Creta (Rs 11.00 - 20.15 L), Maruti Suzuki Swift (Rs 6.49 - 9.64 L), BMW 3 Series Gran Limousine (Rs 60.60 - 62.00 L), Tata Curvv EV (Rs 17.49 - 21.99 L).`;
 
   try {
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent?key=${apiKey}`;
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key=${apiKey}`;
     const response = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
