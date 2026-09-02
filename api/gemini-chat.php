@@ -84,8 +84,8 @@ PROMPT;
 // ─────────────────────────────────────────────
 function callGemini(string $apiKey, string $systemPrompt, string $userMessage): array
 {
-    // gemini-3.6-flash provides lightning-fast responses
-    $url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key={$apiKey}";
+    // gemini-flash-lite-latest responds in ~1.2 seconds without heavy thinking delays
+    $url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-lite-latest:generateContent?key={$apiKey}";
 
     $payload = json_encode([
         'contents' => [
@@ -98,7 +98,7 @@ function callGemini(string $apiKey, string $systemPrompt, string $userMessage): 
         ],
         'generationConfig' => [
             'temperature' => 0.7,
-            'maxOutputTokens' => 600
+            'maxOutputTokens' => 350
         ]
     ]);
 
