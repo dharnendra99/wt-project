@@ -416,30 +416,29 @@ app.controller('ChatbotCtrl', ['$scope', '$http', 'DataService', function($scope
         $scope.userInput = '';
         $scope.isTyping = true;
 
-        // 1️⃣ Try PHP endpoint (Local XAMPP)
-        $http.post('api/gemini-chat.php', { message: msg }, {
+        // 1️⃣ Try Vercel Serverless Function (/api/gemini)
+        $http.post('/api/gemini', { message: msg }, {
             headers: { 'Content-Type': 'application/json' }
         }).then(function(res) {
-            handleBotSuccess(res.data.reply, res.data.source || 'gemini', res.data.suggestions);
+            if (res.data && res.data.reply) {
+                handleBotSuccess(res.data.reply, res.data.source || 'gemini', res.data.suggestions);
+            } else {
+                throw new Error('Invalid reply');
+            }
         }).catch(function() {
-            // 2️⃣ Try Vercel Serverless Function (/api/gemini-chat)
-            $http.post('api/gemini-chat', { message: msg }, {
+            // 2️⃣ Try PHP endpoint (Local XAMPP)
+            $http.post('api/gemini-chat.php', { message: msg }, {
                 headers: { 'Content-Type': 'application/json' }
             }).then(function(res) {
-                handleBotSuccess(res.data.reply, res.data.source || 'gemini', res.data.suggestions);
+                if (res.data && res.data.reply) {
+                    handleBotSuccess(res.data.reply, res.data.source || 'gemini', res.data.suggestions);
+                } else {
+                    throw new Error('Invalid PHP reply');
+                }
             }).catch(function() {
-                // 3️⃣ Direct Client-Side Gemini Call (Guaranteed to work anywhere on Vercel/Static)
-                callGeminiDirect(msg).then(function(aiReply) {
-                    $scope.$apply(function() {
-                        handleBotSuccess(aiReply, 'gemini', ['Compare cars', 'Upcoming EVs', 'Best mileage car']);
-                    });
-                }).catch(function() {
-                    // 4️⃣ Final offline rule-based fallback
-                    $scope.$apply(function() {
-                        var reply = processOfflineClient(msg);
-                        handleBotSuccess(reply.text, 'offline', reply.suggestions);
-                    });
-                });
+                // 3️⃣ Final offline rule-based fallback
+                var reply = processOfflineClient(msg);
+                handleBotSuccess(reply.text, 'offline', reply.suggestions);
             });
         });
     };
@@ -457,12 +456,6 @@ app.controller('ChatbotCtrl', ['$scope', '$http', 'DataService', function($scope
             var body = document.querySelector('.chatbot-messages-body');
             if (body) body.scrollTop = body.scrollHeight;
         }, 50);
-    }
-
-    function callGeminiDirect(userMsg) {
-        // Direct client-side call disabled — key must come from Vercel env via /api/gemini
-        // This path should not be reached if the Vercel function is configured correctly
-        return Promise.reject(new Error('Direct client call disabled. Configure GEMINI_API_KEY in Vercel.'));
     }
 
     function processOfflineClient(rawMsg) {
