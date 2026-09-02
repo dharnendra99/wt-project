@@ -19,7 +19,11 @@
                 <button class="mobile-nav-toggle" id="mobileNavToggle">&#9776;</button>
                 <a href="index.html" class="brand-logo">AUTO<span class="turbo-dot">PULSE</span><span class="logo-tag">INDIA</span></a>
             </div>
-            <div class="top-bar-right">
+            <div class="top-bar-right" style="display:flex; align-items:center; gap:8px;">
+                <button class="top-chat-btn" onclick="window.openAutoPulseChat ? window.openAutoPulseChat() : null" title="Ask Gemini AI Chatbot" style="display:inline-flex; align-items:center; gap:5px; background:linear-gradient(135deg, #D90000, #b30000); color:#fff; font-weight:700; font-size:11px; padding:6px 12px; border-radius:16px; border:none; cursor:pointer; text-transform:uppercase; letter-spacing:0.5px; box-shadow:0 2px 5px rgba(217,0,0,0.3);">
+                    <span>✨</span>
+                    <span>AI Chat</span>
+                </button>
                 <a href="compare.html" class="nav-cta-compare" style="margin-left: 0;">Compare Cars</a>
             </div>
         </div>
@@ -80,6 +84,48 @@
         </div>
     </div>
 </main>
+
+<!-- Floating Chatbot Component -->
+<div class="chatbot-widget-container" id="chatbotContainer" ng-controller="ChatbotCtrl" ng-class="{'active': isOpen}">
+    <button class="chatbot-toggle-btn" ng-click="toggleChat()">
+        <span class="chat-bubble-icon" ng-if="!isOpen">&#128172;</span>
+        <span class="chat-close-icon" ng-if="isOpen">&#10005;</span>
+    </button>
+    <div class="chatbot-drawer">
+        <div class="chatbot-header">
+            <div class="chatbot-header-info">
+                <div class="chatbot-header-avatar" style="background: linear-gradient(135deg,#4285f4,#D90000);">✨</div>
+                <div class="chatbot-header-text">
+                    <h4>AutoPulse AI</h4>
+                    <p>Powered by Google Gemini</p>
+                </div>
+            </div>
+            <button ng-click="toggleChat()" style="background:none; border:none; color:#fff; font-size:20px; cursor:pointer;">&#10005;</button>
+        </div>
+        <div class="chatbot-messages-body">
+            <div class="chat-message" ng-repeat="msg in messages" ng-class="msg.sender">
+                <div class="chat-bubble" render-html="msg.text"></div>
+                <div class="chat-source-badge" ng-if="msg.sender === 'bot'" ng-class="msg.source">
+                    <span ng-if="msg.source === 'gemini'">✨ Gemini AI</span>
+                    <span ng-if="msg.source === 'rule'">⚙ Rule Engine</span>
+                    <span ng-if="msg.source === 'offline'">📴 Offline Mode</span>
+                </div>
+            </div>
+            <div class="chat-message bot" ng-if="isTyping">
+                <div class="chat-bubble" style="display:flex; align-items:center; gap:6px; color: #888; font-style: italic;">
+                    <span style="color:#4285f4;">✨</span> Gemini is thinking...
+                </div>
+            </div>
+            <div class="chat-suggestions-row" ng-if="suggestions.length > 0">
+                <span class="chat-chip" ng-repeat="s in suggestions" ng-click="sendMessage(s)">{{ s }}</span>
+            </div>
+        </div>
+        <div class="chat-input-row">
+            <input type="text" ng-model="userInput" ng-keydown="$event.keyCode === 13 && sendMessage()" class="chat-input-field" placeholder="Ask Gemini about any car...">
+            <button ng-click="sendMessage()" class="chat-send-btn">&#10148;</button>
+        </div>
+    </div>
+</div>
 
 <script src="assets/js/main.js"></script>
 </body>

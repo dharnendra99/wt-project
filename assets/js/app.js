@@ -398,9 +398,14 @@ app.controller('ChatbotCtrl', ['$scope', '$http', 'DataService', function($scope
         }
     ];
     $scope.suggestions = ['Price of Nexon', 'Compare Nexon and Creta', 'Best EV under 25L', 'Safest car in India'];
-
     $scope.toggleChat = function() {
         $scope.isOpen = !$scope.isOpen;
+    };
+
+    window.openAutoPulseChat = function() {
+        $scope.$apply(function() {
+            $scope.isOpen = true;
+        });
     };
 
     $scope.sendMessage = function(text) {

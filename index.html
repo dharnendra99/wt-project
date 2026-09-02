@@ -54,12 +54,16 @@
                     </svg>
                 </button>
 
-                <!-- User Wishlist -->
-                <div class="user-nav-actions">
+                <!-- User Wishlist & Actions -->
+                <div class="user-nav-actions" style="display:flex; align-items:center; gap:8px;">
                     <a href="cars.html" class="btn-wishlist-badge" title="My Wishlist">
                         <span style="font-size: 16px; color: var(--primary-red);">&#9829;</span>
                         <span class="wishlist-count">{{ wishlistCount }}</span>
                     </a>
+                    <button class="top-chat-btn" onclick="window.openAutoPulseChat ? window.openAutoPulseChat() : null" title="Ask Gemini AI Chatbot" style="display:inline-flex; align-items:center; gap:5px; background:linear-gradient(135deg, #D90000, #b30000); color:#fff; font-weight:700; font-size:11px; padding:6px 12px; border-radius:16px; border:none; cursor:pointer; text-transform:uppercase; letter-spacing:0.5px; box-shadow:0 2px 5px rgba(217,0,0,0.3);">
+                        <span>✨</span>
+                        <span>AI Chat</span>
+                    </button>
                     <a href="admin.html" style="background:#111827; color:#fff; font-size:11px; text-transform:uppercase; padding:6px 10px; border-radius:3px;">Admin CMS</a>
                 </div>
             </div>
@@ -99,7 +103,7 @@
                 <div class="slider-track" id="heroSliderTrack">
                     <!-- Default Fallback Slide (Prevents black box on slow networks) -->
                     <div class="slider-slide active" ng-if="!heroArticles || heroArticles.length === 0">
-                        <img src="assets/images/news/curvv-launch.svg" alt="Tata Curvv EV">
+                        <img src="assets/images/news/curvv-launch.png" alt="Tata Curvv EV">
                         <div class="slider-overlay">
                             <span class="slider-tag">Car News</span>
                             <h1 class="slider-headline">
