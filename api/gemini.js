@@ -28,7 +28,11 @@ module.exports = async function handler(req, res) {
 
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
-    return res.status(500).json({ error: 'GEMINI_API_KEY is not configured in Vercel Environment Variables.' });
+    return res.status(200).json({
+      reply: '⚠️ <strong>Gemini API Key missing in Vercel.</strong><br>Please add <code>GEMINI_API_KEY</code> in Vercel Settings &rarr; Environment Variables (for Production) and click Redeploy.',
+      source: 'offline',
+      suggestions: ['Price of Nexon', 'Compare cars', 'Best EV under 25L']
+    });
   }
 
   const systemPrompt = `You are the AutoPulse AI Assistant — India's premier automotive expert chatbot for the AutoPulse portal (inspired by Autocar India).
