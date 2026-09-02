@@ -1,26 +1,7 @@
 {
-  "version": 2,
   "cleanUrls": true,
   "trailingSlash": false,
-  "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=3600, must-revalidate"
-        }
-      ]
-    }
-  ],
-  "routes": [
-    { "src": "/api/gemini-chat", "dest": "/api/gemini.js" },
-    { "src": "/api/gemini", "dest": "/api/gemini.js" },
-    { "src": "/admin", "dest": "/admin.html" },
-    { "src": "/cars", "dest": "/cars.html" },
-    { "src": "/compare", "dest": "/compare.html" },
-    { "src": "/news", "dest": "/news.html" },
-    { "src": "/reviews", "dest": "/reviews.html" },
-    { "src": "/(.*)", "dest": "/$1" }
+  "rewrites": [
+    { "source": "/api/gemini-chat", "destination": "/api/gemini" }
   ]
 }
