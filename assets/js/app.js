@@ -460,28 +460,9 @@ app.controller('ChatbotCtrl', ['$scope', '$http', 'DataService', function($scope
     }
 
     function callGeminiDirect(userMsg) {
-        var key = 'AIzaSyDK0gKpZ7ZT34wS4JWm1nvK32qMpwqaPjM';
-        var url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent?key=' + key;
-        var prompt = "You are the AutoPulse AI Assistant (inspired by Autocar India). Answer questions about any car in India or globally authoritatively and concisely. Use HTML <strong> and <br>. AutoPulse featured cars: Tata Nexon (8-15.5L), XUV700 (14-27L), Creta (11-20L), Swift (6.5-9.6L), BMW 3 Series (60.6-62L), Curvv EV (17.5-22L).";
-        
-        return fetch(url, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                contents: [{ parts: [{ text: prompt + "\n\nUser Question: " + userMsg }] }],
-                generationConfig: { temperature: 0.7, maxOutputTokens: 500 }
-            })
-        }).then(function(response) {
-            if (!response.ok) throw new Error('Gemini API status ' + response.status);
-            return response.json();
-        }).then(function(data) {
-            var parts = data.candidates[0].content.parts;
-            var text = parts.map(function(p) { return p.text || ''; }).join('\n').trim();
-            return text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-                       .replace(/\*(.+?)\*/g, '<em>$1</em>')
-                       .replace(/\n\n/g, '<br><br>')
-                       .replace(/\n/g, '<br>');
-        });
+        // Direct client-side call disabled — key must come from Vercel env via /api/gemini
+        // This path should not be reached if the Vercel function is configured correctly
+        return Promise.reject(new Error('Direct client call disabled. Configure GEMINI_API_KEY in Vercel.'));
     }
 
     function processOfflineClient(rawMsg) {

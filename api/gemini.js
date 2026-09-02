@@ -22,7 +22,7 @@ export default async function handler(req, res) {
     return res.status(400).json({ reply: 'Please enter a valid message!' });
   }
 
-  const apiKey = process.env.GEMINI_API_KEY || 'AIzaSyDK0gKpZ7ZT34wS4JWm1nvK32qMpwqaPjM';
+  const apiKey = process.env.GEMINI_API_KEY;
 
   const systemPrompt = `You are the AutoPulse AI Assistant — India's premier automotive expert chatbot for the AutoPulse portal (inspired by Autocar India).
 
