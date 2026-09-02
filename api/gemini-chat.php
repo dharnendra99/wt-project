@@ -24,7 +24,7 @@ require_once __DIR__ . '/../includes/functions.php';
 // ─────────────────────────────────────────────
 // CONFIG: set your Gemini API key here or in includes/config.php
 // ─────────────────────────────────────────────
-define('GEMINI_API_KEY', 'AIzaSyDK0gKpZ7ZT34wS4JWm1nvK32qMpwqaPjM');  // ← paste your key
+define('GEMINI_API_KEY', '');  // ← paste your key
 
 // Read user message
 $input = json_decode(file_get_contents('php://input'), true);
