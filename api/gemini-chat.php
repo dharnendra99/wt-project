@@ -22,9 +22,12 @@ require_once __DIR__ . '/../includes/db_connect.php';
 require_once __DIR__ . '/../includes/functions.php';
 
 // ─────────────────────────────────────────────
-// CONFIG: set your Gemini API key here or in includes/config.php
+// CONFIG: API key is read from environment variable only
+// For XAMPP local: set in php.ini → add: gemini_api_key = AIzaSy...
+// Or create a file: C:\xampp\htdocs\autopulse\.env and set GEMINI_API_KEY=AIzaSy...
+// NEVER hardcode the key here — this file is public on GitHub!
 // ─────────────────────────────────────────────
-define('GEMINI_API_KEY', '');  // ← paste your key
+define('GEMINI_API_KEY', getenv('GEMINI_API_KEY') ?: '');
 
 // Read user message
 $input = json_decode(file_get_contents('php://input'), true);
