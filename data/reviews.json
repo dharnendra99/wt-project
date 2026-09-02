@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "car_id": 1,
+    "car_name": "Tata Nexon Facelift",
+    "author_name": "Rahul Sharma",
+    "rating": 4.5,
+    "title": "Absolute tank with futuristic tech!",
+    "review_text": "I have driven my Tata Nexon Fearless Plus for 8,500 km. The 5-star crash safety and high bonnet give immense confidence on Indian highways. The ventilated seats are a lifesaver in Delhi summers.",
+    "date": "12 days ago"
+  },
+  {
+    "id": 2,
+    "car_id": 2,
+    "car_name": "Mahindra XUV700",
+    "author_name": "Vikramaditya",
+    "rating": 5.0,
+    "title": "Best long-distance cruiser under 30 Lakhs",
+    "review_text": "Took the XUV700 AX7L AWD on a 2,500 km road trip through Rajasthan. The diesel engine has torque for days, ADAS worked like magic on the expressway, and the Sony audio system is pure concert hall quality.",
+    "date": "5 days ago"
+  },
+  {
+    "id": 3,
+    "car_id": 3,
+    "car_name": "Hyundai Creta",
+    "author_name": "Pooja Nair",
+    "rating": 4.0,
+    "title": "Super refined and comfortable city family SUV",
+    "review_text": "The Hyundai Creta automatic is effortless in Bangalore traffic. The panoramic roof makes the cabin feel twice as spacious. Mileage in bumper-to-bumper traffic is around 11 kmpl, but goes up to 17 kmpl on highway stretches.",
+    "date": "3 days ago"
+  }
+]

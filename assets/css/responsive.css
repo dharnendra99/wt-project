@@ -1,0 +1,171 @@
+/* ==========================================================================
+   AutoPulse - Responsive Stylesheet (Tablets & Mobile)
+   ========================================================================== */
+
+/* Hamburger menu button */
+.mobile-nav-toggle {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: var(--text-dark);
+  padding: 4px;
+}
+
+@media (max-width: 1024px) {
+  .news-layout-row {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .cars-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .explore-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .footer-top-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 28px;
+  }
+
+  .admin-stat-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .car-detail-hero {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .mobile-nav-toggle {
+    display: block;
+  }
+
+  .horizontal-nav {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    background-color: #fff;
+    border-top: 1px solid var(--border-color);
+    padding: 10px 0;
+  }
+
+  .horizontal-nav.show {
+    display: flex;
+  }
+
+  .nav-links-list {
+    flex-direction: column;
+    width: 100%;
+    align-items: flex-start;
+  }
+
+  .nav-item {
+    width: 100%;
+  }
+
+  .nav-item a {
+    padding: 10px 20px;
+    width: 100%;
+  }
+
+  .nav-item.active a::after {
+    display: none;
+  }
+
+  .nav-item.active a {
+    background-color: #fef2f2;
+    border-left: 4px solid var(--primary-red);
+  }
+
+  .nav-cta-compare {
+    margin: 10px 20px !important;
+  }
+
+  .slider-track {
+    height: 340px;
+  }
+
+  .slider-overlay {
+    padding: 30px 20px 20px 20px;
+  }
+
+  .slider-headline {
+    font-size: 20px;
+  }
+
+  .news-card-horizontal {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .news-thumbnail-wrap {
+    height: 180px;
+  }
+
+  .cars-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .explore-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .listing-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .filter-sidebar {
+    position: static;
+  }
+
+  .pros-cons-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .compare-selector-bar {
+    grid-template-columns: 1fr;
+  }
+
+  .compare-matrix-table {
+    display: block;
+    overflow-x: auto;
+  }
+
+  .chatbot-drawer {
+    width: calc(100vw - 32px);
+    right: -10px;
+    bottom: 70px;
+    height: 480px;
+  }
+
+  .chatbot-widget-container {
+    bottom: 16px;
+    right: 16px;
+  }
+
+  .footer-top-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-wrap {
+    flex-direction: column;
+  }
+
+  .admin-sidebar {
+    width: 100%;
+  }
+
+  .admin-stat-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-content {
+    padding: 20px;
+  }
+}

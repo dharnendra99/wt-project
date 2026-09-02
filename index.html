@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="autoPulseApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoPulse - India's Premier Car News, Reviews &amp; Buyer Guide</title>
+    <meta name="description" content="AutoPulse delivers breaking Indian automotive news, in-depth road test reviews, verified prices, specifications, and car comparisons.">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
+    
+    <!-- AngularJS (Offline minified) -->
+    <script src="assets/js/angular.min.js"></script>
+    <script src="assets/js/app.js?v=3"></script>
+</head>
+<body ng-controller="MainCtrl">
+
+<!-- Header Component -->
+<header class="site-header">
+    <div class="container">
+        <!-- 1. Top Bar: Logo on Left, Location & Search on Right -->
+        <div class="top-bar">
+            <div style="display: flex; align-items: center; gap: 14px;">
+                <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="Toggle navigation">&#9776;</button>
+                <a href="index.html" class="brand-logo">
+                    AUTO<span class="turbo-dot">PULSE</span>
+                    <span class="logo-tag">INDIA</span>
+                </a>
+            </div>
+
+            <div class="top-bar-right">
+                <!-- Location / City Selector -->
+                <div class="location-selector" title="Choose your city for localized on-road pricing">
+                    <span style="color: var(--primary-red);">&#9873;</span>
+                    <select id="userCitySelect" ng-model="currentCity" ng-change="changeCity()" aria-label="Select City">
+                        <option value="Delhi">Delhi</option>
+                        <option value="Mumbai">Mumbai</option>
+                        <option value="Bengaluru">Bengaluru</option>
+                        <option value="Chennai">Chennai</option>
+                        <option value="Hyderabad">Hyderabad</option>
+                        <option value="Kolkata">Kolkata</option>
+                        <option value="Pune">Pune</option>
+                        <option value="Ahmedabad">Ahmedabad</option>
+                    </select>
+                </div>
+
+                <!-- Search Button -->
+                <button class="top-search-btn" ng-click="toggleSearch()" title="Search cars, news, and reviews">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                </button>
+
+                <!-- User Wishlist -->
+                <div class="user-nav-actions">
+                    <a href="cars.html" class="btn-wishlist-badge" title="My Wishlist">
+                        <span style="font-size: 16px; color: var(--primary-red);">&#9829;</span>
+                        <span class="wishlist-count">{{ wishlistCount }}</span>
+                    </a>
+                    <a href="admin.html" style="background:#111827; color:#fff; font-size:11px; text-transform:uppercase; padding:6px 10px; border-radius:3px;">Admin CMS</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search Overlay Panel -->
+        <div class="search-overlay-panel" ng-class="{'open': searchOpen}">
+            <form action="cars.html" method="GET" class="search-form-wrap">
+                <input type="text" name="search" ng-model="searchQuery" class="search-input" placeholder="Search cars, upcoming models, news, or reviews..." required>
+                <button type="submit" class="search-submit-btn">Search</button>
+            </form>
+        </div>
+
+        <!-- 2. Horizontal Nav below logo with Red Underline on active tab -->
+        <nav class="horizontal-nav" id="horizontalNav">
+            <ul class="nav-links-list">
+                <li class="nav-item active"><a href="index.html">Car News</a></li>
+                <li class="nav-item"><a href="news.html">Bike News</a></li>
+                <li class="nav-item"><a href="news.html">Motorsport</a></li>
+                <li class="nav-item"><a href="reviews.html">Reviews</a></li>
+                <li class="nav-item"><a href="cars.html">All Cars</a></li>
+                <li class="nav-item"><a href="cars.html">Upcoming Cars</a></li>
+                <li class="nav-item"><a href="compare.html" class="nav-cta-compare">Compare Cars</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<main class="main-content">
+    <div class="container">
+
+        <!-- ============================================================
+             3. Hero / Featured Article Section (Carousel Slider)
+             ============================================================ -->
+        <section class="hero-slider-section">
+            <div class="hero-slider-wrapper">
+                <div class="slider-track" id="heroSliderTrack">
+                    <div class="slider-slide active" ng-repeat="hero in heroArticles" ng-if="$first">
+                        <img ng-src="{{ hero.image }}" alt="{{ hero.title }}">
+                        <div class="slider-overlay">
+                            <span class="slider-tag">{{ hero.category }}</span>
+                            <h1 class="slider-headline">
+                                <a href="news-detail.html?id={{ hero.id }}">{{ hero.title }}</a>
+                            </h1>
+                            <div class="slider-meta">
+                                <div class="author-info">
+                                    <img ng-src="{{ hero.author_avatar }}" alt="{{ hero.author_name }}" class="author-avatar-sm">
+                                    <span>{{ hero.author_name }}</span>
+                                </div>
+                                <span>•</span>
+                                <span>{{ hero.published_at | date:'mediumDate' }}</span>
+                                <span>•</span>
+                                <span>{{ formatViews(hero.views_count) }} Reads</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="slider-controls">
+                    <a href="news.html" class="slider-btn">&larr;</a>
+                    <a href="news.html" class="slider-btn">&rarr;</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================================
+             5. "News by models" section (Pill / Chip tags)
+             ============================================================ -->
+        <section class="model-tags-section">
+            <div class="model-tags-header">
+                <span style="color: var(--primary-red); font-size: 16px;">&#9881;</span>
+                <span>News By Models</span>
+            </div>
+            <div class="model-tags-scroll">
+                <a href="news.html" class="model-chip active">All Models</a>
+                <a href="news.html" class="model-chip">Tata Nexon</a>
+                <a href="news.html" class="model-chip">Mahindra XUV700</a>
+                <a href="news.html" class="model-chip">Hyundai Creta</a>
+                <a href="news.html" class="model-chip">Maruti Swift</a>
+                <a href="news.html" class="model-chip">Tata Curvv</a>
+                <a href="news.html" class="model-chip">Mahindra Thar Roxx</a>
+            </div>
+        </section>
+
+        <!-- ============================================================
+             4 & 6. Latest News (Left) + Trending News (Right)
+             ============================================================ -->
+        <div class="news-layout-row">
+            <!-- Left Column: Suggested / Latest News Feed -->
+            <div class="latest-news-column">
+                <div class="section-header">
+                    <h2 class="section-title">Latest <span class="accent">News</span></h2>
+                    <a href="news.html" class="section-link">View All News &rarr;</a>
+                </div>
+
+                <div class="latest-news-list">
+                    <article class="news-card-horizontal" ng-repeat="item in latestNews">
+                        <div class="news-thumbnail-wrap">
+                            <a href="news-detail.html?id={{ item.id }}">
+                                <img ng-src="{{ item.image }}" alt="{{ item.title }}" loading="lazy">
+                            </a>
+                        </div>
+                        <div class="news-content-col">
+                            <div>
+                                <span class="news-card-tag">{{ item.category }}</span>
+                                <h3 class="news-headline">
+                                    <a href="news-detail.html?id={{ item.id }}">{{ item.title }}</a>
+                                </h3>
+                                <p class="news-snippet">{{ item.subtitle }}</p>
+                            </div>
+                            <div class="news-card-meta">
+                                <span>{{ item.author_name }}</span>
+                                <span>•</span>
+                                <span>{{ formatViews(item.views_count) }} Reads</span>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+
+                <div class="view-more-btn-wrap">
+                    <a href="news.html" class="btn-view-more">View More Automotive News</a>
+                </div>
+            </div>
+
+            <!-- Right Column: Trending News -->
+            <aside class="trending-sidebar-column">
+                <div class="trending-sidebar-card">
+                    <h3 class="trending-sidebar-title">
+                        <span>Trending <span style="color:var(--primary-red);">Stories</span></span>
+                        <span style="font-size: 13px; color: var(--text-muted); font-weight: 600;">Last 24h</span>
+                    </h3>
+
+                    <div class="trending-list">
+                        <div class="trending-item" ng-repeat="trend in trendingNews">
+                            <div class="trending-rank">0{{ $index + 1 }}</div>
+                            <div class="trending-details">
+                                <h4 class="trending-title">
+                                    <a href="news-detail.html?id={{ trend.id }}">{{ trend.title }}</a>
+                                </h4>
+                                <div class="trending-meta">
+                                    <span class="view-count-badge">{{ formatViews(trend.views_count) }}</span>
+                                </div>
+                            </div>
+                            <div class="trending-thumb">
+                                <img ng-src="{{ trend.image }}" alt="{{ trend.title }}" loading="lazy">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+
+        <!-- ============================================================
+             7. "Editors" Section (Circular author avatars)
+             ============================================================ -->
+        <section class="editors-section">
+            <div class="section-header">
+                <h2 class="section-title">Our <span class="accent">Editors</span></h2>
+                <span class="meta-text">Automotive Experts &amp; Road Testers</span>
+            </div>
+            <div class="editors-scroll-row">
+                <div class="editor-card" ng-repeat="ed in editors" onclick="window.location.href='news.html'">
+                    <div class="editor-avatar-wrap">
+                        <img ng-src="{{ ed.avatar }}" alt="{{ ed.name }}">
+                    </div>
+                    <h4 class="editor-name">{{ ed.name }}</h4>
+                    <span class="editor-role">{{ ed.role }}</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================================
+             8. "Explore" Quick-links Row
+             ============================================================ -->
+        <section class="explore-section">
+            <div class="section-header">
+                <h2 class="section-title">Explore <span class="accent">AutoPulse</span></h2>
+            </div>
+            <div class="explore-grid">
+                <a href="cars.html" class="explore-card">
+                    <span class="explore-icon">&#128663;</span>
+                    <span class="explore-label">Explore Cars</span>
+                </a>
+                <a href="news.html" class="explore-card">
+                    <span class="explore-icon">&#127949;</span>
+                    <span class="explore-label">Explore Bikes</span>
+                </a>
+                <a href="compare.html" class="explore-card">
+                    <span class="explore-icon">&#9878;</span>
+                    <span class="explore-label">Expert's Advice</span>
+                </a>
+                <a href="reviews.html" class="explore-card">
+                    <span class="explore-icon">&#9733;</span>
+                    <span class="explore-label">Reviews</span>
+                </a>
+                <a href="news.html" class="explore-card">
+                    <span class="explore-icon">&#128240;</span>
+                    <span class="explore-label">Articles &amp; Blogs</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- ============================================================
+             9. "Trending Cars" Grid Section
+             ============================================================ -->
+        <section class="cars-section">
+            <div class="section-header">
+                <h2 class="section-title">Trending <span class="accent">Cars</span></h2>
+                <a href="cars.html" class="section-link">View All Cars &rarr;</a>
+            </div>
+
+            <div class="cars-grid">
+                <div class="car-card" ng-repeat="car in trendingCars">
+                    <div class="car-card-media">
+                        <img ng-src="{{ car.featured_image }}" alt="{{ car.name }}" loading="lazy">
+                        <span class="car-badge-status trending">Trending</span>
+                        <button class="car-wishlist-btn" ng-class="{'active': isWishlisted(car.id)}" ng-click="toggleWishlist(car.id)" title="Save to Wishlist">
+                            {{ isWishlisted(car.id) ? '♥' : '♡' }}
+                        </button>
+                    </div>
+                    <div class="car-card-body">
+                        <span class="car-card-brand">{{ car.brand_name }}</span>
+                        <h3 class="car-card-title">
+                            <a href="car-detail.html?id={{ car.id }}">{{ car.name }}</a>
+                        </h3>
+                        <div class="car-card-specs">
+                            <span>{{ car.fuel_type }}</span> •
+                            <span>{{ car.transmission }}</span> •
+                            <span>{{ car.mileage }}</span>
+                        </div>
+                        <div class="car-card-footer">
+                            <div class="car-price-block">
+                                <span class="price-text">Rs {{ car.price_min }} - {{ car.price_max }} Lakh*</span>
+                                <span class="price-label">Ex-showroom price</span>
+                            </div>
+                            <a href="car-detail.html?id={{ car.id }}" class="btn-card-action">Explore</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================================
+             9. "Upcoming Cars" Grid Section
+             ============================================================ -->
+        <section style="margin-bottom: 48px;">
+            <div class="section-header">
+                <h2 class="section-title">Upcoming &amp; EV <span class="accent">Launches</span></h2>
+                <a href="cars.html" class="section-link">View All Launches &rarr;</a>
+            </div>
+
+            <div class="cars-grid">
+                <div class="car-card" ng-repeat="car in upcomingCars">
+                    <div class="car-card-media">
+                        <img ng-src="{{ car.featured_image }}" alt="{{ car.name }}" loading="lazy">
+                        <span class="car-badge-status">{{ car.status }}</span>
+                        <button class="car-wishlist-btn" ng-class="{'active': isWishlisted(car.id)}" ng-click="toggleWishlist(car.id)" title="Save to Wishlist">
+                            {{ isWishlisted(car.id) ? '♥' : '♡' }}
+                        </button>
+                    </div>
+                    <div class="car-card-body">
+                        <span class="car-card-brand">{{ car.brand_name }}</span>
+                        <h3 class="car-card-title">
+                            <a href="car-detail.html?id={{ car.id }}">{{ car.name }}</a>
+                        </h3>
+                        <div class="car-card-specs">
+                            <span>{{ car.fuel_type }}</span> •
+                            <span>{{ car.power }}</span> •
+                            <span>{{ car.mileage }}</span>
+                        </div>
+                        <div class="car-card-footer">
+                            <div class="car-price-block">
+                                <span class="price-text">Rs {{ car.price_min }} - {{ car.price_max }} Lakh*</span>
+                                <span class="price-label">Expected Ex-showroom</span>
+                            </div>
+                            <a href="car-detail.html?id={{ car.id }}" class="btn-card-action">View Specs</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+</main>
+
+<!-- Footer Component -->
+<footer class="site-footer">
+    <div class="container">
+        <div class="footer-top-grid">
+            <div class="footer-brand">
+                <h3>AUTO<span>PULSE</span></h3>
+                <p>India's leading authority on automotive journalism, road tests, verified car pricing, and unbiased reviews.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Cars</h4>
+                <ul class="footer-links">
+                    <li><a href="cars.html">SUV Cars</a></li>
+                    <li><a href="cars.html">Sedan Cars</a></li>
+                    <li><a href="cars.html">Hatchbacks</a></li>
+                    <li><a href="cars.html">Electric Cars (EV)</a></li>
+                    <li><a href="compare.html">Compare Cars</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Editorial</h4>
+                <ul class="footer-links">
+                    <li><a href="news.html">Latest Auto News</a></li>
+                    <li><a href="reviews.html">Road Test Reviews</a></li>
+                    <li><a href="news.html">Motorsport &amp; F1</a></li>
+                    <li><a href="news.html">Industry Insights</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>AutoPulse</h4>
+                <ul class="footer-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="admin.html">Admin CMS</a></li>
+                    <li><a href="cars.html">Saved Garage</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 AutoPulse India. Inspired by Autocar India design &amp; structure. College Mini Project.</p>
+            <p>Built with HTML5, CSS3, JavaScript, AngularJS &amp; PHP/MySQL. Vercel Ready.</p>
+        </div>
+    </div>
+</footer>
+
+<!-- 5. Floating Rule-Based Chatbot Assistant (AngularJS Powered) -->
+<div class="chatbot-widget-container" id="chatbotContainer" ng-controller="ChatbotCtrl" ng-class="{'active': isOpen}">
+    <button class="chatbot-toggle-btn" ng-click="toggleChat()" aria-label="Open AutoPulse Assistant">
+        <span class="chat-bubble-icon" ng-if="!isOpen">&#128172;</span>
+        <span class="chat-close-icon" ng-if="isOpen">&#10005;</span>
+    </button>
+
+    <div class="chatbot-drawer">
+        <div class="chatbot-header">
+            <div class="chatbot-header-info">
+                <div class="chatbot-header-avatar" style="background: linear-gradient(135deg,#4285f4,#D90000);">✨</div>
+                <div class="chatbot-header-text">
+                    <h4>AutoPulse AI</h4>
+                    <p>Powered by Google Gemini</p>
+                </div>
+            </div>
+            <button ng-click="toggleChat()" style="background:none; border:none; color:#fff; font-size:20px; cursor:pointer;">&#10005;</button>
+        </div>
+
+        <div class="chatbot-messages-body">
+            <div class="chat-message" ng-repeat="msg in messages" ng-class="msg.sender">
+                <div class="chat-bubble" render-html="msg.text"></div>
+                <div class="chat-source-badge" ng-if="msg.sender === 'bot'" ng-class="msg.source">
+                    <span ng-if="msg.source === 'gemini'">✨ Gemini AI</span>
+                    <span ng-if="msg.source === 'rule'">⚙ Rule Engine</span>
+                    <span ng-if="msg.source === 'offline'">📴 Offline Mode</span>
+                </div>
+            </div>
+
+            <div class="chat-message bot" ng-if="isTyping">
+                <div class="chat-bubble" style="display:flex; align-items:center; gap:6px; color: #888; font-style: italic;">
+                    <span style="color:#4285f4;">✨</span> Gemini is thinking...
+                    <span style="display:inline-flex; gap:3px; margin-left:4px;">
+                        <span style="width:6px; height:6px; background:#4285f4; border-radius:50%; animation:bounce 1s infinite;"></span>
+                        <span style="width:6px; height:6px; background:#4285f4; border-radius:50%; animation:bounce 1s infinite .2s;"></span>
+                        <span style="width:6px; height:6px; background:#4285f4; border-radius:50%; animation:bounce 1s infinite .4s;"></span>
+                    </span>
+                </div>
+            </div>
+
+            <div class="chat-suggestions-row" ng-if="suggestions.length > 0">
+                <span class="chat-chip" ng-repeat="s in suggestions" ng-click="sendMessage(s)">{{ s }}</span>
+            </div>
+        </div>
+
+        <div class="chat-input-row">
+            <input type="text" ng-model="userInput" ng-keydown="$event.keyCode === 13 && sendMessage()" class="chat-input-field" placeholder="Ask Gemini about any car...">
+            <button ng-click="sendMessage()" class="chat-send-btn">&#10148;</button>
+        </div>
+    </div>
+</div>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>

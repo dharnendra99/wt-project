@@ -1,0 +1,242 @@
+[
+  {
+    "id": 1,
+    "name": "Tata Nexon Facelift",
+    "slug": "tata-nexon-facelift",
+    "brand_id": 1,
+    "brand_name": "Tata Motors",
+    "brand_slug": "tata-motors",
+    "body_type": "SUV",
+    "fuel_type": "Petrol",
+    "transmission": "Automatic",
+    "price_min": 8.00,
+    "price_max": 15.50,
+    "price_label": "Ex-showroom price",
+    "status": "Trending",
+    "seating_capacity": 5,
+    "engine_displacement": "1199 cc",
+    "power": "118 bhp",
+    "torque": "170 Nm",
+    "mileage": "17.4 kmpl",
+    "safety_rating": "5 Star (BNCAP / GNCAP)",
+    "featured_image": "assets/images/cars/nexon-real.png",
+    "gallery_images": [
+      "assets/images/cars/nexon-real.png",
+      "assets/images/cars/nexon-side.svg",
+      "assets/images/cars/nexon-interior.svg"
+    ],
+    "overview": "The Tata Nexon facelift elevates the compact SUV segment with an aggressive futuristic front fascia, bi-LED projector headlamps, a 10.25-inch floating touchscreen, and uncompromising 5-star crash safety build.",
+    "pros": [
+      "Top-class 5-star safety rating",
+      "Striking concept-car styling",
+      "Punchy turbo petrol and diesel options",
+      "Feature-loaded cabin with 360-degree camera"
+    ],
+    "cons": [
+      "Infotainment software can have occasional lag",
+      "Firm low-speed ride quality",
+      "Rear seat headroom average for very tall passengers"
+    ],
+    "is_featured": 1
+  },
+  {
+    "id": 2,
+    "name": "Mahindra XUV700",
+    "slug": "mahindra-xuv700",
+    "brand_id": 2,
+    "brand_name": "Mahindra",
+    "brand_slug": "mahindra",
+    "body_type": "SUV",
+    "fuel_type": "Diesel",
+    "transmission": "Automatic",
+    "price_min": 13.99,
+    "price_max": 26.99,
+    "price_label": "Ex-showroom price",
+    "status": "Trending",
+    "seating_capacity": 7,
+    "engine_displacement": "2198 cc",
+    "power": "182 bhp",
+    "torque": "450 Nm",
+    "mileage": "16.5 kmpl",
+    "safety_rating": "5 Star (GNCAP)",
+    "featured_image": "assets/images/cars/xuv700-real.png",
+    "gallery_images": [
+      "assets/images/cars/xuv700-real.png",
+      "assets/images/cars/xuv700-side.svg",
+      "assets/images/cars/xuv700-interior.svg"
+    ],
+    "overview": "Mahindra XUV700 sets the benchmark in full-size mid-segment SUVs, offering dual 10.25-inch superscreens, Level-2 ADAS driver assistance, optional AWD, and blistering powertrain performance.",
+    "pros": [
+      "Blistering 2.0L Turbo Petrol & 2.2L Diesel engines",
+      "Segment-first Level 2 ADAS suite",
+      "Comfortable 3-row layout and Sony 3D sound system",
+      "High speed stability and composure"
+    ],
+    "cons": [
+      "Long waiting periods for top variants",
+      "Third row best suited for children",
+      "Boot space with all 3 rows up is limited"
+    ],
+    "is_featured": 1
+  },
+  {
+    "id": 3,
+    "name": "Hyundai Creta",
+    "slug": "hyundai-creta",
+    "brand_id": 3,
+    "brand_name": "Hyundai",
+    "brand_slug": "hyundai",
+    "body_type": "SUV",
+    "fuel_type": "Petrol",
+    "transmission": "Automatic",
+    "price_min": 11.00,
+    "price_max": 20.15,
+    "price_label": "Ex-showroom price",
+    "status": "Trending",
+    "seating_capacity": 5,
+    "engine_displacement": "1497 cc",
+    "power": "158 bhp",
+    "torque": "253 Nm",
+    "mileage": "18.4 kmpl",
+    "safety_rating": "3 Star (GNCAP)",
+    "featured_image": "assets/images/cars/creta-real.png",
+    "gallery_images": [
+      "assets/images/cars/creta-real.png",
+      "assets/images/cars/creta-side.svg",
+      "assets/images/cars/creta-interior.svg"
+    ],
+    "overview": "The Hyundai Creta is India's undisputed king of mid-size SUVs, featuring bold parametric jewel grille, panoramic sunroof, ventilated front seats, dual-zone climate control, and refined driving dynamics.",
+    "pros": [
+      "Silky smooth refined petrol & diesel engine choices",
+      "Plush premium cabin ergonomics",
+      "Panoramic sunroof and ventilated seats",
+      "High resale value and widespread service network"
+    ],
+    "cons": [
+      "Safety score behind Tata/Mahindra rivals",
+      "No manual option on the top turbo-petrol spec",
+      "Ride can feel soft at aggressive cornering speeds"
+    ],
+    "is_featured": 1
+  },
+  {
+    "id": 4,
+    "name": "Maruti Suzuki Swift",
+    "slug": "maruti-suzuki-swift",
+    "brand_id": 4,
+    "brand_name": "Maruti Suzuki",
+    "brand_slug": "maruti-suzuki",
+    "body_type": "Hatchback",
+    "fuel_type": "Petrol",
+    "transmission": "Manual",
+    "price_min": 6.49,
+    "price_max": 9.64,
+    "price_label": "Ex-showroom price",
+    "status": "Available",
+    "seating_capacity": 5,
+    "engine_displacement": "1197 cc",
+    "power": "80 bhp",
+    "torque": "111.7 Nm",
+    "mileage": "25.75 kmpl",
+    "safety_rating": "Standard 6 Airbags",
+    "featured_image": "assets/images/cars/swift-real.png",
+    "gallery_images": [
+      "assets/images/cars/swift-real.png",
+      "assets/images/cars/swift-side.svg",
+      "assets/images/cars/swift-interior.svg"
+    ],
+    "overview": "The 4th generation Maruti Suzuki Swift brings the brand new Z-series 3-cylinder engine delivering astounding real-world fuel economy exceeding 25 kmpl, standard 6 airbags, and nimble city handling.",
+    "pros": [
+      "Phenomenal fuel efficiency (25+ kmpl)",
+      "Nimble dimensions perfect for city traffic",
+      "6 Airbags standard across all trims",
+      "Peppy low-end throttle response"
+    ],
+    "cons": [
+      "Three-cylinder engine has slight idle vibration",
+      "Rear seat knee room is modest",
+      "Interior plastics feel utilitarian in places"
+    ],
+    "is_featured": 0
+  },
+  {
+    "id": 5,
+    "name": "BMW 3 Series Gran Limousine",
+    "slug": "bmw-3-series-gran-limousine",
+    "brand_id": 5,
+    "brand_name": "BMW",
+    "brand_slug": "bmw",
+    "body_type": "Sedan",
+    "fuel_type": "Petrol",
+    "transmission": "Automatic",
+    "price_min": 60.60,
+    "price_max": 62.00,
+    "price_label": "Ex-showroom price",
+    "status": "Available",
+    "seating_capacity": 5,
+    "engine_displacement": "1998 cc",
+    "power": "255 bhp",
+    "torque": "400 Nm",
+    "mileage": "15.3 kmpl",
+    "safety_rating": "5 Star (Euro NCAP)",
+    "featured_image": "assets/images/cars/bmw3-real.png",
+    "gallery_images": [
+      "assets/images/cars/bmw3-real.png",
+      "assets/images/cars/bmw-3-side.svg",
+      "assets/images/cars/bmw-3-interior.svg"
+    ],
+    "overview": "The BMW 3 Series Gran Limousine combines the legendary rear-wheel-drive dynamics of BMW with an extended 110mm wheelbase for unmatched rear-seat lounge luxury and class-leading curved display cockpit.",
+    "pros": [
+      "Effortless 255 bhp TwinPower Turbo engine",
+      "First-class rear seat legroom and headrest cushions",
+      "Curved iDrive 8 display with wireless CarPlay",
+      "Peerless rear-wheel-drive balance and steering feel"
+    ],
+    "cons": [
+      "Low ground clearance requires caution on tall breakers",
+      "Premium pricing with no spare wheel well",
+      "Heftier road footprint than standard 3 Series"
+    ],
+    "is_featured": 0
+  },
+  {
+    "id": 6,
+    "name": "Tata Curvv EV",
+    "slug": "tata-curvv-ev",
+    "brand_id": 1,
+    "brand_name": "Tata Motors",
+    "brand_slug": "tata-motors",
+    "body_type": "EV",
+    "fuel_type": "Electric",
+    "transmission": "Automatic",
+    "price_min": 17.49,
+    "price_max": 21.99,
+    "price_label": "Ex-showroom price",
+    "status": "Upcoming",
+    "seating_capacity": 5,
+    "engine_displacement": "Electric Motor",
+    "power": "165 bhp",
+    "torque": "215 Nm",
+    "mileage": "585 km (ARAI)",
+    "safety_rating": "5 Star (BNCAP)",
+    "featured_image": "assets/images/cars/curvv-real.png",
+    "gallery_images": [
+      "assets/images/cars/curvv-real.png",
+      "assets/images/cars/curvv-side.svg",
+      "assets/images/cars/curvv-interior.svg"
+    ],
+    "overview": "The Tata Curvv EV introduces the Coupe-SUV body style to the mass market with striking aerodynamic sloping roofline, 55 kWh battery pack, ultra-fast 70 kW DC charging, and Level-2 ADAS suite.",
+    "pros": [
+      "Stunning Coupe SUV silhouette and road presence",
+      "Claimed 585 km range with 55 kWh battery pack",
+      "Powered gesture tailgate and massive 500L boot",
+      "Vehicle-to-Load (V2L) and Vehicle-to-Vehicle (V2V) charging"
+    ],
+    "cons": [
+      "Coupe roofline slightly compromises rear rearward visibility",
+      "Higher variant price approaches larger EV options",
+      "Piano black interior finishes prone to fingerprints"
+    ],
+    "is_featured": 1
+  }
+]

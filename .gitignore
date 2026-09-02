@@ -1,0 +1,7 @@
+# OS & editor files
+.DS_Store
+Thumbs.db
+*.log
+
+# Temporary SQL migration scripts
+update_images.sql

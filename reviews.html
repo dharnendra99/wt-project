@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="autoPulseApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Reviews &amp; Star Ratings - AutoPulse</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
+    <script src="assets/js/angular.min.js"></script>
+    <script src="assets/js/app.js"></script>
+</head>
+<body ng-controller="CarsCtrl">
+
+<header class="site-header">
+    <div class="container">
+        <div class="top-bar">
+            <a href="index.html" class="brand-logo">AUTO<span class="turbo-dot">PULSE</span><span class="logo-tag">INDIA</span></a>
+            <div class="top-bar-right">
+                <a href="compare.html" class="nav-cta-compare" style="margin-left: 0;">Compare Cars</a>
+            </div>
+        </div>
+        <nav class="horizontal-nav" id="horizontalNav">
+            <ul class="nav-links-list">
+                <li class="nav-item"><a href="index.html">Home</a></li>
+                <li class="nav-item"><a href="cars.html">Cars</a></li>
+                <li class="nav-item"><a href="news.html">News</a></li>
+                <li class="nav-item active"><a href="reviews.html">Reviews</a></li>
+                <li class="nav-item"><a href="compare.html">Compare</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<main class="main-content">
+    <div class="container">
+        <div style="margin: 20px 0 10px 0; font-size: 13px; color: var(--text-muted);">
+            <a href="index.html">Home</a> &gt; <span>Car Reviews</span>
+        </div>
+
+        <div class="section-header">
+            <h1 class="section-title">Car <span class="accent">Reviews</span> &amp; Road Tests</h1>
+            <span class="meta-text">Verified Scores &amp; Feedback</span>
+        </div>
+
+        <!-- Car Review Cards -->
+        <div class="cars-grid" style="margin-bottom: 48px;">
+            <div class="car-card" ng-repeat="car in cars">
+                <div class="car-card-media">
+                    <img ng-src="{{ car.featured_image }}" alt="{{ car.name }}">
+                </div>
+                <div class="car-card-body">
+                    <h3 class="car-card-title">
+                        <a href="car-detail.html?id={{ car.id }}">{{ car.name }}</a>
+                    </h3>
+                    <div style="margin: 6px 0 12px 0; color: #ff9800; font-size: 15px;">
+                        ★ ★ ★ ★ ★ <strong style="color: #1a1a1a; font-size: 14px;">4.6 / 5</strong>
+                    </div>
+                    <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 14px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;">
+                        {{ car.overview }}
+                    </p>
+                    <div class="car-card-footer">
+                        <span class="price-text" style="font-size: 15px;">Rs {{ car.price_min }} - {{ car.price_max }} Lakh*</span>
+                        <a href="car-detail.html?id={{ car.id }}" class="btn-card-action">Read Tests</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>

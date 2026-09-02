@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="autoPulseApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compare Cars Side by Side - AutoPulse</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
+    <script src="assets/js/angular.min.js"></script>
+    <script src="assets/js/app.js"></script>
+</head>
+<body ng-controller="CompareCtrl">
+
+<header class="site-header">
+    <div class="container">
+        <div class="top-bar">
+            <div style="display: flex; align-items: center; gap: 14px;">
+                <button class="mobile-nav-toggle" id="mobileNavToggle">&#9776;</button>
+                <a href="index.html" class="brand-logo">
+                    AUTO<span class="turbo-dot">PULSE</span>
+                    <span class="logo-tag">INDIA</span>
+                </a>
+            </div>
+            <div class="top-bar-right">
+                <a href="cars.html" class="btn-card-action" style="background:#111827;">Browse Cars</a>
+            </div>
+        </div>
+        <nav class="horizontal-nav" id="horizontalNav">
+            <ul class="nav-links-list">
+                <li class="nav-item"><a href="index.html">Home</a></li>
+                <li class="nav-item"><a href="cars.html">Cars</a></li>
+                <li class="nav-item"><a href="news.html">News</a></li>
+                <li class="nav-item"><a href="reviews.html">Reviews</a></li>
+                <li class="nav-item active"><a href="compare.html">Compare</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<main class="main-content">
+    <div class="container">
+        <div style="margin: 20px 0 10px 0; font-size: 13px; color: var(--text-muted);">
+            <a href="index.html">Home</a> &gt; <span>Compare Cars</span>
+        </div>
+
+        <div class="section-header">
+            <h1 class="section-title">Car <span class="accent">Comparison</span></h1>
+            <span class="meta-text">Instant Spec Matrix</span>
+        </div>
+
+        <!-- 3-Slot Selector Bar -->
+        <div class="compare-selector-bar">
+            <div class="compare-slot">
+                <label style="display:block; font-size:11px; font-weight:700; text-transform:uppercase; color:var(--text-muted); margin-bottom:8px;">Car 1</label>
+                <select ng-model="car1Id" ng-change="updateComparison()" style="width:100%; padding:10px; border:1px solid #ccc; border-radius:4px; font-weight:700;">
+                    <option ng-repeat="c in allCars" value="{{ c.id }}">{{ c.name }}</option>
+                </select>
+            </div>
+            <div class="compare-slot">
+                <label style="display:block; font-size:11px; font-weight:700; text-transform:uppercase; color:var(--text-muted); margin-bottom:8px;">Car 2</label>
+                <select ng-model="car2Id" ng-change="updateComparison()" style="width:100%; padding:10px; border:1px solid #ccc; border-radius:4px; font-weight:700;">
+                    <option ng-repeat="c in allCars" value="{{ c.id }}">{{ c.name }}</option>
+                </select>
+            </div>
+            <div class="compare-slot">
+                <label style="display:block; font-size:11px; font-weight:700; text-transform:uppercase; color:var(--text-muted); margin-bottom:8px;">Car 3 (Optional)</label>
+                <select ng-model="car3Id" ng-change="updateComparison()" style="width:100%; padding:10px; border:1px solid #ccc; border-radius:4px; font-weight:700;">
+                    <option value="">-- Add 3rd Car --</option>
+                    <option ng-repeat="c in allCars" value="{{ c.id }}">{{ c.name }}</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Spec Table -->
+        <table class="compare-matrix-table" ng-if="comparedCars.length > 0">
+            <thead>
+                <tr>
+                    <th style="width: 25%;">Criteria / Spec</th>
+                    <th ng-repeat="car in comparedCars" style="text-align:center;">
+                        <img ng-src="{{ car.featured_image }}" alt="" style="height: 120px; object-fit: cover; margin: 0 auto 10px auto; border-radius: 4px;">
+                        <div style="font-size: 16px; font-weight: 800; color: var(--text-dark);">{{ car.name }}</div>
+                        <div class="price-text" style="font-size: 16px;">Rs {{ car.price_min }} - {{ car.price_max }} Lakh*</div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="compare-category-row"><td colspan="{{ comparedCars.length + 1 }}">Pricing &amp; Position</td></tr>
+                <tr>
+                    <td><strong>Ex-Showroom Price</strong></td>
+                    <td ng-repeat="car in comparedCars" style="text-align: center; font-weight: 700; color: var(--primary-red);">
+                        Rs {{ car.price_min }} - {{ car.price_max }} Lakh*
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Body Type</strong></td>
+                    <td ng-repeat="car in comparedCars" style="text-align: center;">{{ car.body_type }}</td>
+                </tr>
+
+                <tr class="compare-category-row"><td colspan="{{ comparedCars.length + 1 }}">Powertrain &amp; Specs</td></tr>
+                <tr>
+                    <td><strong>Engine / Motor</strong></td>
+                    <td ng-repeat="car in comparedCars" style="text-align: center;">{{ car.engine_displacement }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Power Output</strong></td>
+                    <td ng-repeat="car in comparedCars" style="text-align: center; font-weight: 700;">{{ car.power }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Fuel / Efficiency</strong></td>
+                    <td ng-repeat="car in comparedCars" style="text-align: center; font-weight: 800; color: #16a34a;">{{ car.mileage }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Transmission</strong></td>
+                    <td ng-repeat="car in comparedCars" style="text-align: center;">{{ car.transmission }}</td>
+                </tr>
+
+                <tr class="compare-category-row"><td colspan="{{ comparedCars.length + 1 }}">Safety &amp; Seating</td></tr>
+                <tr>
+                    <td><strong>Seating Capacity</strong></td>
+                    <td ng-repeat="car in comparedCars" style="text-align: center;">{{ car.seating_capacity }} Seater</td>
+                </tr>
+                <tr>
+                    <td><strong>Crash Safety Rating</strong></td>
+                    <td ng-repeat="car in comparedCars" style="text-align: center; font-weight: 700; color: #1e3a8a;">{{ car.safety_rating }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Detailed Road Test</strong></td>
+                    <td ng-repeat="car in comparedCars" style="text-align: center;">
+                        <a href="car-detail.html?id={{ car.id }}" class="btn-card-action" style="padding: 6px 14px; font-size: 11px;">View Road Test &rarr;</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>

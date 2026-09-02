@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="autoPulseApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Road Test &amp; Specs - AutoPulse</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
+    <script src="assets/js/angular.min.js"></script>
+    <script src="assets/js/app.js"></script>
+</head>
+<body ng-controller="CarDetailCtrl">
+
+<header class="site-header">
+    <div class="container">
+        <div class="top-bar">
+            <div style="display: flex; align-items: center; gap: 14px;">
+                <button class="mobile-nav-toggle" id="mobileNavToggle">&#9776;</button>
+                <a href="index.html" class="brand-logo">
+                    AUTO<span class="turbo-dot">PULSE</span>
+                    <span class="logo-tag">INDIA</span>
+                </a>
+            </div>
+            <div class="top-bar-right">
+                <a href="compare.html?car1={{ car.id }}" class="nav-cta-compare" style="margin-left: 0;">Compare Car</a>
+            </div>
+        </div>
+        <nav class="horizontal-nav" id="horizontalNav">
+            <ul class="nav-links-list">
+                <li class="nav-item"><a href="index.html">Home</a></li>
+                <li class="nav-item active"><a href="cars.html">Cars</a></li>
+                <li class="nav-item"><a href="news.html">News</a></li>
+                <li class="nav-item"><a href="reviews.html">Reviews</a></li>
+                <li class="nav-item"><a href="compare.html">Compare</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<main class="main-content" ng-if="car">
+    <div class="container">
+        <div style="margin: 20px 0 10px 0; font-size: 13px; color: var(--text-muted);">
+            <a href="index.html">Home</a> &gt; <a href="cars.html">Cars</a> &gt; <span>{{ car.name }}</span>
+        </div>
+
+        <div class="car-detail-hero">
+            <!-- Left: Interactive Gallery -->
+            <div class="gallery-col">
+                <div class="gallery-main-view">
+                    <img ng-src="{{ activeImage }}" alt="{{ car.name }}">
+                </div>
+                <div class="gallery-thumbs-row">
+                    <div class="thumb-item" ng-repeat="img in gallery" ng-class="{'active': activeImage === img}" ng-click="setImage(img)">
+                        <img ng-src="{{ img }}" alt="Thumbnail">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Details -->
+            <div class="car-detail-info">
+                <span class="meta-text" style="color:var(--primary-red); font-weight:700;">{{ car.brand_name }}</span>
+                <h1 class="car-detail-title">{{ car.name }}</h1>
+
+                <div style="margin: 8px 0 16px 0; display: flex; align-items: center; gap: 12px;">
+                    <span class="badge-tag" style="background:#1a1a1a;">{{ car.safety_rating }}</span>
+                    <span class="badge-tag" style="background:var(--primary-red);">{{ car.status }}</span>
+                </div>
+
+                <div class="car-detail-pricing-box">
+                    <span style="font-size:12px; text-transform:uppercase; color:var(--text-muted); font-weight:700;">Ex-Showroom Price</span>
+                    <div class="price-text" style="font-size:28px; margin: 4px 0;">Rs {{ car.price_min }} - {{ car.price_max }} Lakh*</div>
+                    <p style="font-size: 12px; color: var(--text-muted); margin-top: 6px;">
+                        *Estimated On-road price in <strong>{{ selectedCity }}</strong>: Rs {{ (car.price_min * 1.12) | number:2 }} - {{ (car.price_max * 1.14) | number:2 }} Lakh.
+                    </p>
+                </div>
+
+                <div style="display: flex; gap: 14px; margin-bottom: 24px;">
+                    <a href="compare.html?car1={{ car.id }}" class="btn-card-action" style="background:var(--primary-red); padding:12px 24px;">Compare With Rivals</a>
+                    <button class="btn-card-action" onclick="alert('Test drive request sent!')" style="background:#fff; color:#1a1a1a; border:1px solid #ccc; padding:12px 24px; cursor:pointer;">Book Test Drive</button>
+                </div>
+
+                <div class="detail-specs-grid">
+                    <div class="spec-box"><span class="label">Engine / Motor</span><div class="value">{{ car.engine_displacement }}</div></div>
+                    <div class="spec-box"><span class="label">Max Power</span><div class="value">{{ car.power }}</div></div>
+                    <div class="spec-box"><span class="label">Peak Torque</span><div class="value">{{ car.torque }}</div></div>
+                    <div class="spec-box"><span class="label">Mileage</span><div class="value">{{ car.mileage }}</div></div>
+                    <div class="spec-box"><span class="label">Transmission</span><div class="value">{{ car.transmission }}</div></div>
+                    <div class="spec-box"><span class="label">Seating</span><div class="value">{{ car.seating_capacity }} Seater</div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Autocar Overview & Pros/Cons -->
+        <section style="margin-bottom: 40px; background:#fff; padding:32px; border:1px solid var(--border-color); border-radius:4px;">
+            <div class="section-header">
+                <h2 class="section-title">{{ car.name }} <span class="accent">Overview</span></h2>
+            </div>
+            <p style="font-size: 16px; line-height: 1.8; color: #333; margin-bottom: 24px;">
+                {{ car.overview }}
+            </p>
+
+            <div class="pros-cons-grid">
+                <div class="pros-box">
+                    <h4>✔ What We Like (The Pros)</h4>
+                    <ul class="pros-cons-list">
+                        <li ng-repeat="p in car.pros"><strong style="color:#16a34a;">+</strong> {{ p }}</li>
+                    </ul>
+                </div>
+                <div class="cons-box">
+                    <h4>✖ What Could Be Better (The Cons)</h4>
+                    <ul class="pros-cons-list">
+                        <li ng-repeat="c in car.cons"><strong style="color:var(--primary-red);">-</strong> {{ c }}</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Reviews Section with AngularJS interactive submission -->
+        <section style="margin-bottom: 48px; background:#fff; padding:32px; border:1px solid var(--border-color); border-radius:4px;">
+            <div class="section-header">
+                <h2 class="section-title">Owner &amp; Expert <span class="accent">Reviews</span></h2>
+            </div>
+
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:36px;">
+                <div>
+                    <h3 style="font-size:18px; font-weight:800; margin-bottom:16px;">Verified Road Tests ({{ reviews.length }})</h3>
+                    <div style="display:flex; flex-direction:column; gap:16px;">
+                        <div style="border-bottom:1px solid var(--border-light); padding-bottom:16px;" ng-repeat="rev in reviews">
+                            <div style="display:flex; justify-content:space-between;">
+                                <strong>{{ rev.author_name }}</strong>
+                                <span style="font-size:11px; color:var(--text-muted);">{{ rev.date }}</span>
+                            </div>
+                            <div style="color:#ff9800; font-size:14px; margin:4px 0;">★ ★ ★ ★ ★ <strong style="color:#1a1a1a;">{{ rev.rating }}</strong></div>
+                            <h4 style="font-size:14px; font-weight:700;">{{ rev.title }}</h4>
+                            <p style="font-size:13.5px; color:#4b5563; line-height:1.5;">{{ rev.review_text }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="background:var(--bg-section); padding:24px; border-radius:4px; border:1px solid var(--border-color);">
+                    <h3 style="font-size:18px; font-weight:800; margin-bottom:16px;">Write a Review</h3>
+                    <div ng-if="reviewSubmitted" style="padding:12px; background:#f0fdf4; border:1px solid #bbf7d0; color:#166534; border-radius:4px; margin-bottom:16px;">
+                        Thank you! Your review was recorded in real-time.
+                    </div>
+                    <form ng-submit="submitReview()">
+                        <div style="margin-bottom:12px;">
+                            <label style="display:block; font-size:11px; font-weight:700; text-transform:uppercase; margin-bottom:4px;">Your Name</label>
+                            <input type="text" ng-model="newReview.author_name" style="width:100%; padding:10px; border:1px solid var(--border-color); border-radius:4px;" required>
+                        </div>
+                        <div style="margin-bottom:12px;">
+                            <label style="display:block; font-size:11px; font-weight:700; text-transform:uppercase; margin-bottom:4px;">Rating</label>
+                            <select ng-model="newReview.rating" style="width:100%; padding:10px; border:1px solid var(--border-color); border-radius:4px; font-weight:700;">
+                                <option value="5.0">5.0 - Outstanding</option>
+                                <option value="4.5">4.5 - Excellent</option>
+                                <option value="4.0">4.0 - Very Good</option>
+                            </select>
+                        </div>
+                        <div style="margin-bottom:12px;">
+                            <label style="display:block; font-size:11px; font-weight:700; text-transform:uppercase; margin-bottom:4px;">Review Title</label>
+                            <input type="text" ng-model="newReview.title" style="width:100%; padding:10px; border:1px solid var(--border-color); border-radius:4px;" required>
+                        </div>
+                        <div style="margin-bottom:16px;">
+                            <label style="display:block; font-size:11px; font-weight:700; text-transform:uppercase; margin-bottom:4px;">Review</label>
+                            <textarea ng-model="newReview.review_text" rows="4" style="width:100%; padding:10px; border:1px solid var(--border-color); border-radius:4px;" required></textarea>
+                        </div>
+                        <button type="submit" class="btn-card-action" style="background:var(--primary-red); width:100%; padding:12px; cursor:pointer;">
+                            Submit Review
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </div>
+</main>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>

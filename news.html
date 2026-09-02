@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="autoPulseApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Automotive News &amp; Road Tests - AutoPulse</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
+    <script src="assets/js/angular.min.js"></script>
+    <script src="assets/js/app.js"></script>
+</head>
+<body ng-controller="NewsCtrl">
+
+<header class="site-header">
+    <div class="container">
+        <div class="top-bar">
+            <div style="display: flex; align-items: center; gap: 14px;">
+                <button class="mobile-nav-toggle" id="mobileNavToggle">&#9776;</button>
+                <a href="index.html" class="brand-logo">AUTO<span class="turbo-dot">PULSE</span><span class="logo-tag">INDIA</span></a>
+            </div>
+            <div class="top-bar-right">
+                <a href="compare.html" class="nav-cta-compare" style="margin-left: 0;">Compare Cars</a>
+            </div>
+        </div>
+        <nav class="horizontal-nav" id="horizontalNav">
+            <ul class="nav-links-list">
+                <li class="nav-item"><a href="index.html">Home</a></li>
+                <li class="nav-item"><a href="cars.html">Cars</a></li>
+                <li class="nav-item active"><a href="news.html">News</a></li>
+                <li class="nav-item"><a href="reviews.html">Reviews</a></li>
+                <li class="nav-item"><a href="compare.html">Compare</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<main class="main-content">
+    <div class="container">
+        <div style="margin: 20px 0 10px 0; font-size: 13px; color: var(--text-muted);">
+            <a href="index.html">Home</a> &gt; <span>News</span>
+        </div>
+
+        <div class="section-header">
+            <h1 class="section-title">Automotive <span class="accent">News</span> &amp; Spy Shots</h1>
+            <!-- Category Chips -->
+            <div style="display:flex; gap:8px;">
+                <button ng-repeat="cat in categories" ng-click="$parent.selectedCategory = cat" class="model-chip" ng-class="{'active': $parent.selectedCategory === cat}">
+                    {{ cat }}
+                </button>
+            </div>
+        </div>
+
+        <div class="latest-news-list" style="margin-bottom: 48px;">
+            <article class="news-card-horizontal" ng-repeat="item in (filteredNews = (news | filter:filterNews))">
+                <div class="news-thumbnail-wrap">
+                    <a href="news-detail.html?id={{ item.id }}">
+                        <img ng-src="{{ item.image }}" alt="{{ item.title }}" loading="lazy">
+                    </a>
+                </div>
+                <div class="news-content-col">
+                    <div>
+                        <span class="news-card-tag">{{ item.category }}</span>
+                        <h2 class="news-headline" style="font-size: 18px;">
+                            <a href="news-detail.html?id={{ item.id }}">{{ item.title }}</a>
+                        </h2>
+                        <p class="news-snippet">{{ item.subtitle }}</p>
+                    </div>
+                    <div class="news-card-meta">
+                        <span>{{ item.author_name }}</span>
+                        <span>•</span>
+                        <span>{{ item.published_at | date:'mediumDate' }}</span>
+                    </div>
+                </div>
+            </article>
+
+            <div ng-if="filteredNews.length === 0" style="text-align: center; padding: 48px; background: #fff; border: 1px solid var(--border-color); border-radius: 4px;">
+                <h3>No articles found in this category</h3>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>

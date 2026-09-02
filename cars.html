@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="autoPulseApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find New Cars in India - AutoPulse</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
+    <script src="assets/js/angular.min.js"></script>
+    <script src="assets/js/app.js?v=3"></script>
+</head>
+<body ng-controller="CarsCtrl">
+
+<header class="site-header">
+    <div class="container">
+        <div class="top-bar">
+            <div style="display: flex; align-items: center; gap: 14px;">
+                <button class="mobile-nav-toggle" id="mobileNavToggle">&#9776;</button>
+                <a href="index.html" class="brand-logo">
+                    AUTO<span class="turbo-dot">PULSE</span>
+                    <span class="logo-tag">INDIA</span>
+                </a>
+            </div>
+            <div class="top-bar-right">
+                <a href="compare.html" class="nav-cta-compare" style="margin-left: 0;">Compare Cars</a>
+                <a href="admin.html" style="background:#111827; color:#fff; font-size:11px; text-transform:uppercase; padding:6px 10px; border-radius:3px;">Admin CMS</a>
+            </div>
+        </div>
+
+        <nav class="horizontal-nav" id="horizontalNav">
+            <ul class="nav-links-list">
+                <li class="nav-item"><a href="index.html">Car News</a></li>
+                <li class="nav-item"><a href="news.html">Bike News</a></li>
+                <li class="nav-item"><a href="reviews.html">Reviews</a></li>
+                <li class="nav-item active"><a href="cars.html">All Cars</a></li>
+                <li class="nav-item"><a href="compare.html">Compare</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<main class="main-content">
+    <div class="container">
+        <div style="margin: 20px 0 10px 0; font-size: 13px; color: var(--text-muted);">
+            <a href="index.html">Home</a> &gt; <span>New Cars</span>
+        </div>
+
+        <div class="section-header">
+            <h1 class="section-title">Explore New <span class="accent">Cars</span></h1>
+            <span class="meta-text">{{ filteredCars.length }} Models Found</span>
+        </div>
+
+        <div class="listing-layout">
+            <!-- AngularJS Two-Way Filter Sidebar -->
+            <aside class="filter-sidebar">
+                <div class="filter-header">
+                    <h3>Filters</h3>
+                    <button type="button" ng-click="resetFilters()" class="btn-reset-filters">Clear All</button>
+                </div>
+
+                <!-- Instant Search Input -->
+                <div class="filter-group">
+                    <h4 class="filter-title">Quick Search</h4>
+                    <input type="text" ng-model="filter.search" placeholder="Type car or brand..." style="width: 100%; padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 13px;">
+                </div>
+
+                <!-- Brand Filter -->
+                <div class="filter-group">
+                    <h4 class="filter-title">Brand</h4>
+                    <div class="filter-options-list">
+                        <label class="custom-checkbox" ng-repeat="b in brandsList">
+                            <input type="checkbox" ng-model="filter.brands[b]">
+                            <span>{{ b }}</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Body Type Filter -->
+                <div class="filter-group">
+                    <h4 class="filter-title">Body Type</h4>
+                    <div class="filter-options-list">
+                        <label class="custom-checkbox" ng-repeat="bt in bodyTypesList">
+                            <input type="checkbox" ng-model="filter.bodyTypes[bt]">
+                            <span>{{ bt }}</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Fuel Type Filter -->
+                <div class="filter-group">
+                    <h4 class="filter-title">Fuel Type</h4>
+                    <div class="filter-options-list">
+                        <label class="custom-checkbox" ng-repeat="ft in fuelTypesList">
+                            <input type="checkbox" ng-model="filter.fuelTypes[ft]">
+                            <span>{{ ft }}</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Price Bracket -->
+                <div class="filter-group">
+                    <h4 class="filter-title">Budget</h4>
+                    <div class="filter-options-list">
+                        <label class="custom-checkbox">
+                            <input type="radio" ng-model="filter.priceBracket" value="">
+                            <span>All Price Brackets</span>
+                        </label>
+                        <label class="custom-checkbox">
+                            <input type="radio" ng-model="filter.priceBracket" value="under_10">
+                            <span>Under Rs 10 Lakh</span>
+                        </label>
+                        <label class="custom-checkbox">
+                            <input type="radio" ng-model="filter.priceBracket" value="10_to_20">
+                            <span>Rs 10 - 20 Lakh</span>
+                        </label>
+                        <label class="custom-checkbox">
+                            <input type="radio" ng-model="filter.priceBracket" value="20_to_50">
+                            <span>Rs 20 - 50 Lakh</span>
+                        </label>
+                        <label class="custom-checkbox">
+                            <input type="radio" ng-model="filter.priceBracket" value="above_50">
+                            <span>Above Rs 50 Lakh (Luxury)</span>
+                        </label>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Results Grid -->
+            <section class="listing-results">
+                <div class="active-filters-bar">
+                    <span style="font-size: 13px; font-weight: 700; text-transform: uppercase;">Real-Time Filter Results</span>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <label style="font-size: 12px; font-weight: 600; text-transform: uppercase;">Sort by:</label>
+                        <select ng-model="filter.sort" style="padding: 4px 8px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 13px;">
+                            <option value="price_asc">Price: Low to High</option>
+                            <option value="price_desc">Price: High to Low</option>
+                            <option value="name">Name: A to Z</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="cars-grid">
+                    <div class="car-card" ng-repeat="car in (filteredCars = (cars | filter:customCarFilter | orderBy:getSortOrder()))">
+                        <div class="car-card-media">
+                            <img ng-src="{{ car.featured_image }}" alt="{{ car.name }}" loading="lazy">
+                            <span class="car-badge-status" ng-class="car.status.toLowerCase()">{{ car.status }}</span>
+                            <button class="car-wishlist-btn" ng-class="{'active': isWishlisted(car.id)}" ng-click="toggleWishlist(car.id)">
+                                {{ isWishlisted(car.id) ? '♥' : '♡' }}
+                            </button>
+                        </div>
+                        <div class="car-card-body">
+                            <span class="car-card-brand">{{ car.brand_name }}</span>
+                            <h3 class="car-card-title">
+                                <a href="car-detail.html?id={{ car.id }}">{{ car.name }}</a>
+                            </h3>
+                            <div class="car-card-specs">
+                                <span>{{ car.fuel_type }}</span> •
+                                <span>{{ car.transmission }}</span> •
+                                <span>{{ car.mileage }}</span>
+                            </div>
+                            <div class="car-card-footer">
+                                <div class="car-price-block">
+                                    <span class="price-text">Rs {{ car.price_min }} - {{ car.price_max }} Lakh*</span>
+                                    <span class="price-label">Ex-showroom price</span>
+                                </div>
+                                <a href="car-detail.html?id={{ car.id }}" class="btn-card-action">Explore</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div ng-if="filteredCars.length === 0" style="grid-column: 1/-1; text-align: center; padding: 48px; background: #fff; border: 1px solid var(--border-color); border-radius: 4px;">
+                        <h3 style="font-size: 20px; margin-bottom: 8px;">No matching cars found</h3>
+                        <p style="color: var(--text-muted);">Try adjusting your filter options or clear filters to view the full lineup.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</main>
+
+<!-- Floating Chatbot Component -->
+<div class="chatbot-widget-container" id="chatbotContainer" ng-controller="ChatbotCtrl" ng-class="{'active': isOpen}">
+    <button class="chatbot-toggle-btn" ng-click="toggleChat()">
+        <span class="chat-bubble-icon" ng-if="!isOpen">&#128172;</span>
+        <span class="chat-close-icon" ng-if="isOpen">&#10005;</span>
+    </button>
+    <div class="chatbot-drawer">
+        <div class="chatbot-header">
+            <div class="chatbot-header-info">
+                <div class="chatbot-header-avatar" style="background: linear-gradient(135deg,#4285f4,#D90000);">✨</div>
+                <div class="chatbot-header-text">
+                    <h4>AutoPulse AI</h4>
+                    <p>Powered by Google Gemini</p>
+                </div>
+            </div>
+            <button ng-click="toggleChat()" style="background:none; border:none; color:#fff; font-size:20px; cursor:pointer;">&#10005;</button>
+        </div>
+        <div class="chatbot-messages-body">
+            <div class="chat-message" ng-repeat="msg in messages" ng-class="msg.sender">
+                <div class="chat-bubble" render-html="msg.text"></div>
+                <div class="chat-source-badge" ng-if="msg.sender === 'bot'" ng-class="msg.source">
+                    <span ng-if="msg.source === 'gemini'">✨ Gemini AI</span>
+                    <span ng-if="msg.source === 'rule'">⚙ Rule Engine</span>
+                    <span ng-if="msg.source === 'offline'">📴 Offline Mode</span>
+                </div>
+            </div>
+            <div class="chat-message bot" ng-if="isTyping">
+                <div class="chat-bubble" style="display:flex; align-items:center; gap:6px; color: #888; font-style: italic;">
+                    <span style="color:#4285f4;">✨</span> Gemini is thinking...
+                </div>
+            </div>
+            <div class="chat-suggestions-row" ng-if="suggestions.length > 0">
+                <span class="chat-chip" ng-repeat="s in suggestions" ng-click="sendMessage(s)">{{ s }}</span>
+            </div>
+        </div>
+        <div class="chat-input-row">
+            <input type="text" ng-model="userInput" ng-keydown="$event.keyCode === 13 && sendMessage()" class="chat-input-field" placeholder="Ask Gemini about any car...">
+            <button ng-click="sendMessage()" class="chat-send-btn">&#10148;</button>
+        </div>
+    </div>
+</div>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>
