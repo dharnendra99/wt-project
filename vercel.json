@@ -14,7 +14,8 @@
     }
   ],
   "routes": [
-    { "src": "/api/gemini-chat", "dest": "/api/gemini-chat.js" },
+    { "src": "/api/gemini-chat", "dest": "/api/gemini.js" },
+    { "src": "/api/gemini", "dest": "/api/gemini.js" },
     { "src": "/admin", "dest": "/admin.html" },
     { "src": "/cars", "dest": "/cars.html" },
     { "src": "/compare", "dest": "/compare.html" },
