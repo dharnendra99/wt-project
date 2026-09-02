@@ -10,10 +10,10 @@
 
 window.SUPABASE_CONFIG = {
     // Replace with your Supabase Project URL (e.g. 'https://xyzabcdef.supabase.co')
-    url: '',
+    url: 'https://qybcwmdqrswrotgkdkda.supabase.co',
     
     // Replace with your Supabase Anon / Public Key (starts with 'eyJhbGciOi...')
-    anonKey: '',
+    anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF5YmN3bWRxcnN3cm90Z2tka2RhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODgzNzI5NTcsImV4cCI6MjEwMzk0ODk1N30.wis0V1PWG0WSr5VhvFnxZn9gOmYnFbbG2tM7a--cQvM',
 
     // Optional Supabase Storage Bucket for Car Images (leave empty to use repo relative paths)
     storageBucketUrl: ''
