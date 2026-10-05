@@ -106,6 +106,163 @@ app.factory('DataService', ['$http', function($http) {
     };
 }]);
 
+// Global Auth Service for Google Sign-In, Email/Password & Demo Login
+app.factory('AuthService', ['$q', function($q) {
+    return {
+        getCurrentUser: function() {
+            if (window.SupaAuth) {
+                return window.SupaAuth.getCurrentUser();
+            }
+            return $q.resolve(null);
+        },
+        signInWithGoogle: function() {
+            if (window.SupaAuth) {
+                return window.SupaAuth.signInWithGoogle();
+            }
+            return $q.reject(new Error('Supabase Auth not loaded'));
+        },
+        signInWithPassword: function(email, password) {
+            if (window.SupaAuth) {
+                return window.SupaAuth.signInWithPassword(email, password);
+            }
+            return $q.reject(new Error('Supabase Auth not loaded'));
+        },
+        signUpWithPassword: function(email, password, fullName) {
+            if (window.SupaAuth) {
+                return window.SupaAuth.signUpWithPassword(email, password, fullName);
+            }
+            return $q.reject(new Error('Supabase Auth not loaded'));
+        },
+        loginAsDemo: function(name, email) {
+            if (window.SupaAuth) {
+                return window.SupaAuth.loginAsDemo(name, email);
+            }
+            return $q.resolve(null);
+        },
+        signOut: function() {
+            if (window.SupaAuth) {
+                return window.SupaAuth.signOut();
+            }
+            return $q.resolve();
+        }
+    };
+}]);
+
+// App Run: Global User State & Auth Modal Controller
+app.run(['$rootScope', 'AuthService', function($rootScope, AuthService) {
+    $rootScope.currentUser = null;
+    $rootScope.authModalOpen = false;
+    $rootScope.authTab = 'login';
+    $rootScope.authForm = { email: '', password: '', fullName: '' };
+    $rootScope.authError = '';
+    $rootScope.authSuccess = '';
+    $rootScope.authLoading = false;
+
+    // Load initial session
+    AuthService.getCurrentUser().then(function(user) {
+        $rootScope.currentUser = user;
+        try { $rootScope.$apply(); } catch(e) {}
+    });
+
+    // Listen for live auth updates
+    if (window.SupaAuth && window.SupaAuth.onAuthStateChange) {
+        window.SupaAuth.onAuthStateChange(function(user) {
+            $rootScope.currentUser = user;
+            try { $rootScope.$apply(); } catch(e) {}
+        });
+    }
+
+    $rootScope.openAuthModal = function(tab) {
+        $rootScope.authTab = tab || 'login';
+        $rootScope.authModalOpen = true;
+        $rootScope.authError = '';
+        $rootScope.authSuccess = '';
+    };
+
+    $rootScope.closeAuthModal = function() {
+        $rootScope.authModalOpen = false;
+        $rootScope.authError = '';
+        $rootScope.authSuccess = '';
+    };
+
+    $rootScope.loginWithGoogle = function() {
+        $rootScope.authLoading = true;
+        $rootScope.authError = '';
+        AuthService.signInWithGoogle().catch(function(err) {
+            $rootScope.authLoading = false;
+            $rootScope.authError = err.message || 'Google Sign-in failed. Please try Email or Quick Demo Login.';
+            try { $rootScope.$apply(); } catch(e) {}
+        });
+    };
+
+    $rootScope.loginWithDemo = function() {
+        $rootScope.authLoading = true;
+        AuthService.loginAsDemo('AutoPulse Member', 'member@autopulse.in').then(function(user) {
+            $rootScope.currentUser = user;
+            $rootScope.authLoading = false;
+            $rootScope.closeAuthModal();
+            try { $rootScope.$apply(); } catch(e) {}
+        });
+    };
+
+    $rootScope.submitAuthForm = function() {
+        if (!$rootScope.authForm.email || !$rootScope.authForm.password) {
+            $rootScope.authError = 'Please enter both email and password.';
+            return;
+        }
+
+        $rootScope.authLoading = true;
+        $rootScope.authError = '';
+        $rootScope.authSuccess = '';
+
+        if ($rootScope.authTab === 'login') {
+            AuthService.signInWithPassword($rootScope.authForm.email, $rootScope.authForm.password)
+                .then(function() {
+                    return AuthService.getCurrentUser();
+                })
+                .then(function(user) {
+                    $rootScope.currentUser = user;
+                    $rootScope.authLoading = false;
+                    $rootScope.closeAuthModal();
+                    $rootScope.authForm = { email: '', password: '', fullName: '' };
+                    try { $rootScope.$apply(); } catch(e) {}
+                })
+                .catch(function(err) {
+                    $rootScope.authLoading = false;
+                    $rootScope.authError = err.message || 'Invalid email or password.';
+                    try { $rootScope.$apply(); } catch(e) {}
+                });
+        } else {
+            AuthService.signUpWithPassword($rootScope.authForm.email, $rootScope.authForm.password, $rootScope.authForm.fullName)
+                .then(function(data) {
+                    $rootScope.authLoading = false;
+                    if (data && data.session) {
+                        return AuthService.getCurrentUser().then(function(user) {
+                            $rootScope.currentUser = user;
+                            $rootScope.closeAuthModal();
+                        });
+                    } else {
+                        $rootScope.authSuccess = 'Account registered! You can now log in, or use Quick Demo Login for instant access.';
+                        $rootScope.authTab = 'login';
+                    }
+                    try { $rootScope.$apply(); } catch(e) {}
+                })
+                .catch(function(err) {
+                    $rootScope.authLoading = false;
+                    $rootScope.authError = err.message || 'Registration failed. Please try again.';
+                    try { $rootScope.$apply(); } catch(e) {}
+                });
+        }
+    };
+
+    $rootScope.logout = function() {
+        AuthService.signOut().then(function() {
+            $rootScope.currentUser = null;
+            try { $rootScope.$apply(); } catch(e) {}
+        });
+    };
+}]);
+
 // 1. Main Homepage Controller
 app.controller('MainCtrl', ['$scope', 'DataService', function($scope, DataService) {
     $scope.currentCity = localStorage.getItem('autopulse_city') || 'Delhi';
@@ -385,7 +542,7 @@ app.controller('NewsCtrl', ['$scope', 'DataService', function($scope, DataServic
 }]);
 
 // 6. Gemini-Powered Chatbot Controller (with rule-based offline fallback)
-app.controller('ChatbotCtrl', ['$scope', '$http', 'DataService', function($scope, $http, DataService) {
+app.controller('ChatbotCtrl', ['$scope', '$rootScope', '$http', 'DataService', function($scope, $rootScope, $http, DataService) {
     $scope.isOpen = false;
     $scope.userInput = '';
     $scope.isTyping = false;
@@ -409,6 +566,11 @@ app.controller('ChatbotCtrl', ['$scope', '$http', 'DataService', function($scope
     };
 
     $scope.sendMessage = function(text) {
+        if (!$rootScope.currentUser) {
+            $rootScope.openAuthModal('login');
+            return;
+        }
+
         var msg = text || $scope.userInput;
         if (!msg || !msg.trim()) return;
 
