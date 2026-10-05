@@ -44,8 +44,8 @@ Featured cars: Tata Nexon (Rs 8-15.8L), XUV700 (Rs 14-27L), Creta (Rs 11-20L), S
     }
   } catch(e) {}
 
-  // Step 2: Pick the best model — prefer flash-lite/flash variants
-  var preferredOrder = ['gemini-2.0-flash-lite', 'gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-pro'];
+  // Step 2: Pick the best model — tested & working models with current Gemini API
+  var preferredOrder = ['gemini-flash-lite-latest', 'gemini-3.8-flash', 'gemini-2.5-flash', 'gemini-flash-latest'];
   var modelsToTry = [];
 
   // Add preferred models that are actually available
@@ -67,7 +67,7 @@ Featured cars: Tata Nexon (Rs 8-15.8L), XUV700 (Rs 14-27L), Creta (Rs 11-20L), S
 
   // Final fallback: try these hardcoded names
   if (modelsToTry.length === 0) {
-    modelsToTry = ['gemini-2.0-flash-lite', 'gemini-2.0-flash', 'gemini-pro'];
+    modelsToTry = ['gemini-flash-lite-latest', 'gemini-3.8-flash', 'gemini-2.5-flash'];
   }
 
   // Step 3: Try each model until one works
