@@ -527,12 +527,16 @@ app.controller('CompareCtrl', ['$scope', 'DataService', function($scope, DataSer
 
 // 5. News Controller
 app.controller('NewsCtrl', ['$scope', 'DataService', function($scope, DataService) {
+    var urlParams = new URLSearchParams(window.location.search);
+    $scope.selectedId = parseInt(urlParams.get('id') || '1');
     $scope.selectedCategory = 'All';
-    $scope.categories = ['All', 'Car News', 'Bike News', 'Motorsport', 'Industry'];
+    $scope.categories = ['All', 'Car News', 'EV News', 'Upcoming Launches'];
     $scope.news = [];
+    $scope.currentArticle = null;
 
     DataService.getNews().then(function(news) {
         $scope.news = news || [];
+        $scope.currentArticle = $scope.news.find(function(item) { return item.id == $scope.selectedId; }) || $scope.news[0];
     });
 
     $scope.filterNews = function(item) {

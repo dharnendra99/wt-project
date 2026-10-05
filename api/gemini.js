@@ -45,11 +45,11 @@ Your capabilities & instructions:
 5. Keep responses under 180 words, punchy and easy to read on mobile.
 6. Featured AutoPulse cars: Tata Nexon Facelift (Rs 8.00 - 15.50 L), Mahindra XUV700 (Rs 13.99 - 26.99 L), Hyundai Creta (Rs 11.00 - 20.15 L), Maruti Suzuki Swift (Rs 6.49 - 9.64 L), BMW 3 Series Gran Limousine (Rs 60.60 - 62.00 L), Tata Curvv EV (Rs 17.49 - 21.99 L).`;
 
-  // List of models in order of speed and stability
+  // List of official Google Gemini models in order of speed and stability
   const candidateModels = [
-    'gemini-flash-lite-latest',
-    'gemini-3.6-flash',
-    'gemini-3.5-flash-lite'
+    'gemini-2.0-flash',
+    'gemini-1.5-flash',
+    'gemini-1.5-flash-8b'
   ];
 
   let reply = '';

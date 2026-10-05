@@ -10,7 +10,7 @@
     "fuel_type": "Petrol",
     "transmission": "Automatic",
     "price_min": 8.00,
-    "price_max": 15.50,
+    "price_max": 15.80,
     "price_label": "Ex-showroom price",
     "status": "Trending",
     "seating_capacity": 5,
@@ -19,9 +19,9 @@
     "torque": "170 Nm",
     "mileage": "17.4 kmpl",
     "safety_rating": "5 Star (BNCAP / GNCAP)",
-    "featured_image": "assets/images/cars/nexon-real.png",
+    "featured_image": "assets/images/cars/tata-nexon.jpg",
     "gallery_images": [
-      "assets/images/cars/nexon-real.png",
+      "assets/images/cars/tata-nexon.jpg",
       "assets/images/cars/nexon-side.svg",
       "assets/images/cars/nexon-interior.svg"
     ],
@@ -59,9 +59,9 @@
     "torque": "450 Nm",
     "mileage": "16.5 kmpl",
     "safety_rating": "5 Star (GNCAP)",
-    "featured_image": "assets/images/cars/xuv700-real.png",
+    "featured_image": "assets/images/cars/mahindra-xuv700.jpg",
     "gallery_images": [
-      "assets/images/cars/xuv700-real.png",
+      "assets/images/cars/mahindra-xuv700.jpg",
       "assets/images/cars/xuv700-side.svg",
       "assets/images/cars/xuv700-interior.svg"
     ],
@@ -99,9 +99,9 @@
     "torque": "253 Nm",
     "mileage": "18.4 kmpl",
     "safety_rating": "3 Star (GNCAP)",
-    "featured_image": "assets/images/cars/creta-real.png",
+    "featured_image": "assets/images/cars/hyundai-creta.jpg",
     "gallery_images": [
-      "assets/images/cars/creta-real.png",
+      "assets/images/cars/hyundai-creta.jpg",
       "assets/images/cars/creta-side.svg",
       "assets/images/cars/creta-interior.svg"
     ],
@@ -139,9 +139,9 @@
     "torque": "111.7 Nm",
     "mileage": "25.75 kmpl",
     "safety_rating": "Standard 6 Airbags",
-    "featured_image": "assets/images/cars/swift-real.png",
+    "featured_image": "assets/images/cars/maruti-swift.jpg",
     "gallery_images": [
-      "assets/images/cars/swift-real.png",
+      "assets/images/cars/maruti-swift.jpg",
       "assets/images/cars/swift-side.svg",
       "assets/images/cars/swift-interior.svg"
     ],
@@ -238,5 +238,347 @@
       "Piano black interior finishes prone to fingerprints"
     ],
     "is_featured": 1
+  },
+  {
+    "id": 7,
+    "name": "Tata Punch",
+    "slug": "tata-punch",
+    "brand_id": 1,
+    "brand_name": "Tata Motors",
+    "brand_slug": "tata-motors",
+    "body_type": "SUV",
+    "fuel_type": "Petrol",
+    "transmission": "Manual",
+    "price_min": 6.13,
+    "price_max": 10.20,
+    "price_label": "Ex-showroom price",
+    "status": "Trending",
+    "seating_capacity": 5,
+    "engine_displacement": "1199 cc",
+    "power": "87 bhp",
+    "torque": "115 Nm",
+    "mileage": "20.09 kmpl",
+    "safety_rating": "5 Star (GNCAP)",
+    "featured_image": "assets/images/cars/tata-punch.jpg",
+    "gallery_images": [
+      "assets/images/cars/tata-punch.jpg"
+    ],
+    "overview": "India's highest selling micro-SUV, the Tata Punch delivers authentic SUV stance, 187mm ground clearance, 90-degree opening doors, and certified 5-star crash safety at an unbeatable price point.",
+    "pros": [
+      "Full 5-star GNCAP adult safety rating",
+      "Tough build quality and commanding road stance",
+      "90-degree wide opening doors for easy entry/exit",
+      "Available in Petrol, CNG, and EV options"
+    ],
+    "cons": [
+      "Engine lacks punch at high expressway speeds",
+      "AMT gearbox feels sluggish during overtakes",
+      "3-cylinder engine note audible under hard acceleration"
+    ],
+    "is_featured": 1
+  },
+  {
+    "id": 8,
+    "name": "Mahindra Thar",
+    "slug": "mahindra-thar",
+    "brand_id": 2,
+    "brand_name": "Mahindra",
+    "brand_slug": "mahindra",
+    "body_type": "SUV",
+    "fuel_type": "Diesel",
+    "transmission": "Automatic",
+    "price_min": 11.35,
+    "price_max": 17.60,
+    "price_label": "Ex-showroom price",
+    "status": "Trending",
+    "seating_capacity": 4,
+    "engine_displacement": "2184 cc",
+    "power": "130 bhp",
+    "torque": "300 Nm",
+    "mileage": "15.2 kmpl",
+    "safety_rating": "4 Star (GNCAP)",
+    "featured_image": "assets/images/cars/mahindra-thar.jpg",
+    "gallery_images": [
+      "assets/images/cars/mahindra-thar.jpg"
+    ],
+    "overview": "The iconic Mahindra Thar is India's premier lifestyle off-roader with true 4x4 capability, mechanical locking differentials, convertible or hard-top roofs, and imposing road presence.",
+    "pros": [
+      "Unmatched off-road prowess with 4x4 low range",
+      "Cult status design and massive street presence",
+      "Powerful mStallion petrol and mHawk diesel motors",
+      "Factory fitted hard-top and convertible options"
+    ],
+    "cons": [
+      "Bumpy ladder-frame ride quality on uneven roads",
+      "Ingress to rear seats requires folding front passenger seat",
+      "Very limited luggage boot space"
+    ],
+    "is_featured": 1
+  },
+  {
+    "id": 9,
+    "name": "Mahindra Thar Electric (Vision Thar.e)",
+    "slug": "mahindra-thar-electric",
+    "brand_id": 2,
+    "brand_name": "Mahindra",
+    "brand_slug": "mahindra",
+    "body_type": "EV",
+    "fuel_type": "Electric",
+    "transmission": "Automatic",
+    "price_min": 25.00,
+    "price_max": 30.00,
+    "price_label": "Expected Ex-showroom price",
+    "status": "Upcoming",
+    "seating_capacity": 5,
+    "engine_displacement": "Dual Electric Motors (AWD)",
+    "power": "285 bhp",
+    "torque": "535 Nm",
+    "mileage": "450 km (Claimed)",
+    "safety_rating": "5 Star Expected (BNCAP)",
+    "featured_image": "assets/images/cars/mahindra-thar-electric.jpg",
+    "gallery_images": [
+      "assets/images/cars/mahindra-thar-electric.jpg"
+    ],
+    "overview": "The Mahindra Thar.e concept is a radical electric off-roader based on the INGLO-born EV platform with modular geometric design, high ground clearance, quad-motor electronic 4WD, and futuristic cabin tech.",
+    "pros": [
+      "Revolutionary electric 4x4 with instant torque",
+      "INGLO platform with 80 kWh high-density battery",
+      "Aggressive futuristic cyberpunk styling",
+      "Clean zero-emission overland off-roading"
+    ],
+    "cons": [
+      "Expected launch slated for 2026-2027",
+      "Higher price point compared to ICE Thar",
+      "Remote trail charging infrastructure dependency"
+    ],
+    "is_featured": 1
+  },
+  {
+    "id": 10,
+    "name": "Mahindra XUV 3XO EV",
+    "slug": "mahindra-xuv-3xo-ev",
+    "brand_id": 2,
+    "brand_name": "Mahindra",
+    "brand_slug": "mahindra",
+    "body_type": "EV",
+    "fuel_type": "Electric",
+    "transmission": "Automatic",
+    "price_min": 14.99,
+    "price_max": 18.99,
+    "price_label": "Expected Ex-showroom price",
+    "status": "Upcoming",
+    "seating_capacity": 5,
+    "engine_displacement": "Electric Motor",
+    "power": "148 bhp",
+    "torque": "310 Nm",
+    "mileage": "456 km (ARAI)",
+    "safety_rating": "5 Star (BNCAP)",
+    "featured_image": "assets/images/cars/mahindra-xuv-3xo-ev.jpg",
+    "gallery_images": [
+      "assets/images/cars/mahindra-xuv-3xo-ev.jpg"
+    ],
+    "overview": "Mahindra's all-new electrified compact SUV based on the acclaimed XUV 3XO platform, featuring a panoramic skyroof, dual 10.25-inch screens, Level-2 ADAS, and blistering 0-100 km/h acceleration.",
+    "pros": [
+      "Largest panoramic sunroof in the compact EV segment",
+      "Level 2 ADAS suite with radar and 360-degree camera",
+      "Class-leading cabin width and rear legroom",
+      "Fast DC charging from 10% to 80% in 30 mins"
+    ],
+    "cons": [
+      "Boot space slightly compromised by battery packaging",
+      "Polarizing front LED light signature",
+      "Real-world highway range may vary under heavy AC load"
+    ],
+    "is_featured": 1
+  },
+  {
+    "id": 11,
+    "name": "Hyundai Venue",
+    "slug": "hyundai-venue",
+    "brand_id": 3,
+    "brand_name": "Hyundai",
+    "brand_slug": "hyundai",
+    "body_type": "SUV",
+    "fuel_type": "Petrol",
+    "transmission": "Automatic",
+    "price_min": 7.94,
+    "price_max": 13.48,
+    "price_label": "Ex-showroom price",
+    "status": "Available",
+    "seating_capacity": 5,
+    "engine_displacement": "998 cc (Turbo)",
+    "power": "118 bhp",
+    "torque": "172 Nm",
+    "mileage": "18.3 kmpl",
+    "safety_rating": "4 Star (GNCAP)",
+    "featured_image": "assets/images/cars/hyundai-venue.jpg",
+    "gallery_images": [
+      "assets/images/cars/hyundai-venue.jpg"
+    ],
+    "overview": "The Hyundai Venue combines dark chrome parametric grille, connected LED taillamps, 2-step reclining rear seats, and SmartSense Level-1 ADAS into a compact, tech-rich city SUV package.",
+    "pros": [
+      "Refined 1.0L Turbo petrol engine paired with DCT",
+      "Level 1 ADAS safety features introduced in top trims",
+      "User-friendly BlueLink connected car tech with 60+ features",
+      "2-step rear seat recline function"
+    ],
+    "cons": [
+      "Rear seat space tight for three full-sized adults",
+      "No diesel-automatic transmission combination",
+      "Firm suspension over broken potholes"
+    ],
+    "is_featured": 0
+  },
+  {
+    "id": 12,
+    "name": "Hyundai i20",
+    "slug": "hyundai-i20",
+    "brand_id": 3,
+    "brand_name": "Hyundai",
+    "brand_slug": "hyundai",
+    "body_type": "Hatchback",
+    "fuel_type": "Petrol",
+    "transmission": "Manual",
+    "price_min": 7.04,
+    "price_max": 11.21,
+    "price_label": "Ex-showroom price",
+    "status": "Available",
+    "seating_capacity": 5,
+    "engine_displacement": "1197 cc",
+    "power": "87 bhp",
+    "torque": "115 Nm",
+    "mileage": "20.0 kmpl",
+    "safety_rating": "Standard 6 Airbags",
+    "featured_image": "assets/images/cars/hyundai-i20.jpg",
+    "gallery_images": [
+      "assets/images/cars/hyundai-i20.jpg"
+    ],
+    "overview": "The Hyundai i20 is India's benchmark premium hatchback, boasting parametric jewel design, 10.25-inch touchscreen, Bose 7-speaker sound system, electric sunroof, and 6 standard airbags.",
+    "pros": [
+      "Gorgeous low-slung European hatchback styling",
+      "Plush cabin with 10.25-inch infotainment and Bose audio",
+      "Generous rear knee room and wide shoulder room",
+      "Standard 6 airbags across all variants"
+    ],
+    "cons": [
+      "Top variants are priced close to compact SUVs",
+      "Diesel engine discontinued",
+      "Low seating posture might not appeal to SUV enthusiasts"
+    ],
+    "is_featured": 0
+  },
+  {
+    "id": 13,
+    "name": "Hyundai Verna",
+    "slug": "hyundai-verna",
+    "brand_id": 3,
+    "brand_name": "Hyundai",
+    "brand_slug": "hyundai",
+    "body_type": "Sedan",
+    "fuel_type": "Petrol",
+    "transmission": "Automatic",
+    "price_min": 11.00,
+    "price_max": 17.42,
+    "price_label": "Ex-showroom price",
+    "status": "Trending",
+    "seating_capacity": 5,
+    "engine_displacement": "1482 cc (Turbo)",
+    "power": "158 bhp",
+    "torque": "253 Nm",
+    "mileage": "20.6 kmpl",
+    "safety_rating": "5 Star (GNCAP)",
+    "featured_image": "assets/images/cars/hyundai-verna.jpg",
+    "gallery_images": [
+      "assets/images/cars/hyundai-verna.jpg"
+    ],
+    "overview": "The 6th generation Hyundai Verna is a sensational mid-size sedan offering a 160 hp turbo-petrol motor, full Level-2 ADAS suite, 5-star GNCAP safety rating, and fastback styling.",
+    "pros": [
+      "Ferocious 160 hp 1.5L Turbo engine (0-100 in 8.1s)",
+      "Full 5-star GNCAP adult and child safety score",
+      "Spacious rear legroom and huge 528-litre boot",
+      "Dual integrated curved displays and heated/ventilated seats"
+    ],
+    "cons": [
+      "Futuristic horizontal LED bar styling is polarizing",
+      "Rear headroom limited for 6ft+ passengers due to fastback roof",
+      "Low ground clearance on large speed breakers"
+    ],
+    "is_featured": 1
+  },
+  {
+    "id": 14,
+    "name": "Maruti Suzuki Dzire",
+    "slug": "maruti-suzuki-dzire",
+    "brand_id": 4,
+    "brand_name": "Maruti Suzuki",
+    "brand_slug": "maruti-suzuki",
+    "body_type": "Sedan",
+    "fuel_type": "Petrol",
+    "transmission": "Automatic",
+    "price_min": 6.79,
+    "price_max": 10.14,
+    "price_label": "Ex-showroom price",
+    "status": "Trending",
+    "seating_capacity": 5,
+    "engine_displacement": "1197 cc",
+    "power": "80 bhp",
+    "torque": "112 Nm",
+    "mileage": "25.71 kmpl",
+    "safety_rating": "5 Star (GNCAP)",
+    "featured_image": "assets/images/cars/maruti-dzire.jpg",
+    "gallery_images": [
+      "assets/images/cars/maruti-dzire.jpg"
+    ],
+    "overview": "The 2025 Maruti Suzuki Dzire redefines the compact sedan segment with a historic 5-star GNCAP safety rating, electric sunroof, 360-degree camera, wireless Apple CarPlay, and class-best 25.7 kmpl mileage.",
+    "pros": [
+      "Historic 5-star GNCAP crash test rating",
+      "Segment-first electric sunroof and 360 camera",
+      "Extraordinary fuel efficiency of 25.7 kmpl",
+      "Plush dual-tone beige interior with rear AC vents"
+    ],
+    "cons": [
+      "3-cylinder Z-Series engine has moderate top-end punch",
+      "Rear middle seat best for children",
+      "Long waiting period on top variants"
+    ],
+    "is_featured": 1
+  },
+  {
+    "id": 15,
+    "name": "Maruti Suzuki Brezza",
+    "slug": "maruti-suzuki-brezza",
+    "brand_id": 4,
+    "brand_name": "Maruti Suzuki",
+    "brand_slug": "maruti-suzuki",
+    "body_type": "SUV",
+    "fuel_type": "Petrol",
+    "transmission": "Automatic",
+    "price_min": 8.34,
+    "price_max": 14.14,
+    "price_label": "Ex-showroom price",
+    "status": "Available",
+    "seating_capacity": 5,
+    "engine_displacement": "1462 cc",
+    "power": "102 bhp",
+    "torque": "136.8 Nm",
+    "mileage": "19.8 kmpl",
+    "safety_rating": "4 Star (GNCAP)",
+    "featured_image": "assets/images/cars/maruti-brezza.jpg",
+    "gallery_images": [
+      "assets/images/cars/maruti-brezza.jpg"
+    ],
+    "overview": "The Maruti Suzuki Brezza is India's trusted family compact SUV, powered by the reliable 1.5L K-Series DualJet engine, Head-Up Display (HUD), 360-degree camera, electric sunroof, and paddle shifters.",
+    "pros": [
+      "Super reliable 4-cylinder 1.5L naturally aspirated engine",
+      "Smooth 6-speed torque converter AT with paddle shifters",
+      "Segment-first Head-Up Display (HUD) and 360 camera",
+      "Low maintenance costs and massive resale value"
+    ],
+    "cons": [
+      "No turbo-petrol or diesel engine options",
+      "Cabin plastics feel slightly dated compared to rivals",
+      "Top variants enter mid-size SUV price bracket"
+    ],
+    "is_featured": 0
   }
 ]

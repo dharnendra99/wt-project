@@ -8,8 +8,8 @@
     <link rel="stylesheet" href="assets/css/responsive.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="assets/js/angular.min.js"></script>
-    <script src="assets/js/supabase-client.js?v=8"></script>
-    <script src="assets/js/app.js?v=8"></script>
+    <script src="assets/js/supabase-client.js?v=9"></script>
+    <script src="assets/js/app.js?v=9"></script>
 </head>
 <body ng-controller="NewsCtrl">
 
@@ -44,12 +44,21 @@
                 <a href="news.html" class="btn-card-action" style="background:#111827;">&larr; All News</a>
             </div>
         </div>
+        <nav class="horizontal-nav" id="horizontalNav">
+            <ul class="nav-links-list">
+                <li class="nav-item"><a href="index.html">Home</a></li>
+                <li class="nav-item"><a href="cars.html">All Cars</a></li>
+                <li class="nav-item active"><a href="news.html">News</a></li>
+                <li class="nav-item"><a href="reviews.html">Reviews</a></li>
+                <li class="nav-item"><a href="compare.html" class="nav-cta-compare">Compare Cars</a></li>
+            </ul>
+        </nav>
     </div>
 </header>
 
-<main class="main-content" ng-init="selectedId = 1">
+<main class="main-content">
     <div class="container" style="max-width: 860px; margin: 30px auto 60px auto;">
-        <article style="background:#fff; padding: 32px; border: 1px solid var(--border-color); border-radius: var(--radius-sm);" ng-repeat="item in news" ng-if="item.id == 1">
+        <article style="background:#fff; padding: 32px; border: 1px solid var(--border-color); border-radius: var(--radius-sm);" ng-repeat="item in news" ng-if="item.id == selectedId">
             <span class="badge-tag" style="margin-bottom: 12px;">{{ item.category }}</span>
             <h1 style="font-size: 30px; font-weight: 900; line-height: 1.25; margin-bottom: 12px;">
                 {{ item.title }}
